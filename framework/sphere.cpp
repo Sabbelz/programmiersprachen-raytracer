@@ -29,3 +29,18 @@ std::ostream& Sphere::print(std::ostream& os) const{
     return os << "Center: " << center_.x << center_.y << center_.z
               << " Radius: " << radius_ << std::endl;
 }
+
+hitpoint Sphere::intersect(Ray const& r) const{
+    Ray n{r};
+    hitpoint hit{};
+    float distance;
+    bool washit = glm::intersectRaySphere(n.origin, glm::normalize(n.direction), center_, pow(radius_,2), distance);
+    if (washit == true){
+       hit.hit_= true;
+       hit.color_= color_;
+       hit.direction_ = n.direction;
+       hit.distance_ = distance;
+       hit.name_ = name_;
+    }
+    return hit;
+}

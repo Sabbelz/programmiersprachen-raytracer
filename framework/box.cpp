@@ -36,3 +36,6 @@ std::ostream& Box::print(std::ostream& os) const{
     return os << "Max: " << max_.x << max_.y << max_.z
               << " Min: " << min_.x << min_.y << min_.z;
 }
+hitpoint Box::intersect(Ray const& r)const{
+
+}
