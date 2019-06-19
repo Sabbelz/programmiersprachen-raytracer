@@ -29,3 +29,6 @@ float Box::volume() const{
 
     return abs(a*b*c);
 }
+std::ostream& Box::print(std::ostream& os) const{
+    
+}

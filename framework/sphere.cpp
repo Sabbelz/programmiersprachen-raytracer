@@ -22,3 +22,6 @@ float Sphere::area() const{
 float Sphere::volume() const{
     return (4.f/3.f * M_PI * pow(radius_,3));
 }
+std::ostream& Sphere::print(std::ostream& os) const{
+    
+}
