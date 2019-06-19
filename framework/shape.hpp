@@ -9,7 +9,7 @@ class Shape{
     public:
 
     Shape ();
-    Shape (glm::vec3 color, std::string name);
+    Shape (glm::vec3 const& color, std::string const& name);
 
     virtual float area() const = 0;
     virtual float volume() const = 0;

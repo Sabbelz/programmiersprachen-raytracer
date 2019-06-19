@@ -1,10 +1,12 @@
 #include "box.hpp"
 
 Box::Box():
+Shape{},
 max_{0.0f},
 min_{0.0f}{}
 
 Box::Box(glm::vec3 const& max, glm::vec3 const& min):
+Shape{},
 max_{max},
 min_{min}{}
 
@@ -30,5 +32,7 @@ float Box::volume() const{
     return abs(a*b*c);
 }
 std::ostream& Box::print(std::ostream& os) const{
-    
+    Shape::print(os);
+    return os << "Max: " << max_.x << max_.y << max_.z
+              << " Min: " << min_.x << min_.y << min_.z;
 }

@@ -21,6 +21,17 @@ TEST_CASE("area/volume", "[arvo]"){
   REQUIRE(test_3.volume() == Approx(4.18879f));
 }
 
+TEST_CASE("print", "[pr]"){
+  Box test;
+
+  Sphere test_2;
+
+  test.print(std::cout);
+
+  test_2.print(std::cout);
+
+  
+}
 int main(int argc, char *argv[])
 {
   return Catch::Session().run(argc, argv);
