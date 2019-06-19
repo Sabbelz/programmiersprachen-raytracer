@@ -7,13 +7,16 @@
 #include "hitpoint.hpp"
 #include <glm/glm.hpp>
 #include <glm/gtx/intersect.hpp>
+#include "color.hpp"
 
 class Shape{
 
     public:
 
     Shape ();
-    Shape (glm::vec3 const& color, std::string const& name);
+    Shape (Color const& color, std::string const& name);
+
+    virtual ~Shape() {std::cout << "Shape destructor used." <<std::endl;};
 
     virtual float area() const = 0;
     virtual float volume() const = 0;
@@ -22,7 +25,7 @@ class Shape{
     virtual std::ostream& print(std::ostream& os) const = 0;
 
     protected:
-    glm::vec3 color_;
+    Color color_;
     std::string name_;
 };
 

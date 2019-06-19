@@ -4,17 +4,17 @@
 Sphere::Sphere():
 Shape{},
 center_{0.0f},
-radius_{0.0f}{}
+radius_{0.0f}{std::cout << "Sphere constructor used."<<std::endl;}
 
 Sphere::Sphere(glm::vec3 const& center, float radius):
 Shape{},
 center_{center},
-radius_{abs(radius)}{}
+radius_{abs(radius)}{std::cout << "Sphere constructor used."<<std::endl;}
 
-Sphere::Sphere(glm::vec3 const& center, float radius, glm::vec3 const& color, std::string const& name):
+Sphere::Sphere(glm::vec3 const& center, float radius, Color const& color, std::string const& name):
 Shape{color, name},
 center_{center},
-radius_{abs(radius)}{}
+radius_{abs(radius)}{std::cout << "Sphere constructor used."<<std::endl;}
 
 
 float Sphere::area() const{
@@ -26,7 +26,7 @@ float Sphere::volume() const{
 }
 std::ostream& Sphere::print(std::ostream& os) const{
     Shape::print(os);
-    return os << "Center: " << center_.x << center_.y << center_.z
+    return os << "Center: " << center_.x << " " << center_.y << " " << center_.z
               << " Radius: " << radius_ << std::endl;
 }
 
@@ -37,7 +37,7 @@ hitpoint Sphere::intersect(Ray const& r) const{
     bool washit = glm::intersectRaySphere(n.origin, glm::normalize(n.direction), center_, pow(radius_,2), distance);
     if (washit == true){
        hit.hit_= true;
-       hit.color_= color_;
+       hit.color_ = color_;
        hit.direction_ = n.direction;
        hit.distance_ = distance;
        hit.name_ = name_;

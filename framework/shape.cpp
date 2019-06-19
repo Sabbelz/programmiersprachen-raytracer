@@ -1,16 +1,16 @@
 #include "shape.hpp"
 
 Shape::Shape():
-color_{0.0f},
-name_{"default"}{}
+color_{0.5f,0.5f,0.5f},
+name_{"default"}{std::cout << "Shape constructor used." << std::endl;}
 
-Shape::Shape(glm::vec3 const& color, std::string const& name):
+Shape::Shape(Color const& color, std::string const& name):
 color_{color},
-name_{name}{}
+name_{name}{std::cout << "Shape constructor used." << std::endl;}
 
 std::ostream& Shape::print(std::ostream& os) const{
-    return os << " Color: " << color_.x
-              << color_.y << color_.z 
+    return os << " Color: " << color_.r << " "
+              << color_.g << " " << color_.b << " "
               << " Name: " << name_ << "\n";  
 }
 

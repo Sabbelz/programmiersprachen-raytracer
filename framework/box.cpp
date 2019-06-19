@@ -3,17 +3,17 @@
 Box::Box():
 Shape{},
 max_{0.0f},
-min_{0.0f}{}
+min_{0.0f}{std::cout << "Box constructor used."<<std::endl;}
 
 Box::Box(glm::vec3 const& max, glm::vec3 const& min):
 Shape{},
 max_{max},
-min_{min}{}
+min_{min}{std::cout << "Box constructor used."<<std::endl;}
 
-Box::Box(glm::vec3 const& max, glm::vec3 const& min, std::string const& name, glm::vec3 const& color):
+Box::Box(glm::vec3 const& max, glm::vec3 const& min, std::string const& name, Color const& color):
 Shape{color, name},
 max_{max},
-min_{min}{}
+min_{min}{std::cout << "Box constructor used."<<std::endl;}
 
 float Box::area() const{
     float a = max_.x - min_.y;
