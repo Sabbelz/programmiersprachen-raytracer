@@ -5,9 +5,15 @@ Sphere::Sphere():
 center_{0.0f},
 radius_{0.0f}{}
 
-Sphere::Sphere(glm::vec3 center, float radius):
+Sphere::Sphere(glm::vec3 const& center, float radius):
 center_{center},
 radius_{abs(radius)}{}
+
+Sphere::Sphere(glm::vec3 const& center, float radius, glm::vec3 const& color, std::string const& name):
+Shape{color, name},
+center_{center},
+radius_{abs(radius)}{}
+
 
 float Sphere::area() const{
     return (4* M_PI * radius_ * radius_);
