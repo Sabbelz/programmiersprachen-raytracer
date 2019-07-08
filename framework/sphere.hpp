@@ -10,7 +10,7 @@ class Sphere: public Shape{
     Sphere(glm::vec3 const& center, float radius);
     Sphere(glm::vec3 const& center, float radius, std::shared_ptr<Material> material, std::string const& name);
 
-    ~Sphere(){std::cout <<"Sphere destructor used."<<std::endl;}
+    ~Sphere(){/*std::cout <<"Sphere destructor used."<<std::endl;*/}
 
     float area() const override;
     float volume() const override;

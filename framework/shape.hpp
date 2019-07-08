@@ -18,7 +18,7 @@ class Shape{
     Shape ();
     Shape (std::shared_ptr<Material> material, std::string const& name);
 
-    virtual ~Shape() {std::cout << "Shape destructor used." <<std::endl;};
+    virtual ~Shape() {/*std::cout << "Shape destructor used." <<std::endl;*/};
 
     virtual float area() const = 0;
     virtual float volume() const = 0;

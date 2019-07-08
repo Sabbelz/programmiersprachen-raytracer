@@ -4,17 +4,17 @@
 Sphere::Sphere():
 Shape{},
 center_{0.0f},
-radius_{0.0f}{std::cout << "Sphere constructor used."<<std::endl;}
+radius_{0.0f}{/*std::cout << "Sphere constructor used."<<std::endl;*/}
 
 Sphere::Sphere(glm::vec3 const& center, float radius):
 Shape{},
 center_{center},
-radius_{abs(radius)}{std::cout << "Sphere constructor used."<<std::endl;}
+radius_{abs(radius)}{/*std::cout << "Sphere constructor used."<<std::endl;*/}
 
 Sphere::Sphere(glm::vec3 const& center, float radius,std::shared_ptr<Material> material, std::string const& name):
 Shape{material, name},
 center_{center},
-radius_{abs(radius)}{std::cout << "Sphere constructor used."<<std::endl;}
+radius_{abs(radius)}{/*std::cout << "Sphere constructor used."<<std::endl; */}
 
 
 float Sphere::area() const{
