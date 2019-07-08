@@ -10,7 +10,7 @@ class Box: public Shape{
 
     Box();
     Box(glm::vec3 const& max, glm::vec3 const& min);
-    Box(glm::vec3 const& max, glm::vec3 const& min, std::string const& name, Color const& color);
+    Box(glm::vec3 const& max, glm::vec3 const& min, std::string const& name, std::shared_ptr<Material> material);
 
     ~Box(){std::cout << "Box destructor used"<<std::endl;}
 

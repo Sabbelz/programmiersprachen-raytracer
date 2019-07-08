@@ -8,13 +8,15 @@
 #include <glm/glm.hpp>
 #include <glm/gtx/intersect.hpp>
 #include "color.hpp"
+#include "Material.hpp"
+#include <memory>
 
 class Shape{
 
     public:
 
     Shape ();
-    Shape (Color const& color, std::string const& name);
+    Shape (std::shared_ptr<Material> material, std::string const& name);
 
     virtual ~Shape() {std::cout << "Shape destructor used." <<std::endl;};
 
@@ -25,7 +27,7 @@ class Shape{
     virtual std::ostream& print(std::ostream& os) const;
 
     protected:
-    Color color_;
+    std::shared_ptr<Material> material_;
     std::string name_;
 };
 

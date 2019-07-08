@@ -8,7 +8,7 @@ class Sphere: public Shape{
 
     Sphere();
     Sphere(glm::vec3 const& center, float radius);
-    Sphere(glm::vec3 const& center, float radius, Color const& color, std::string const& name);
+    Sphere(glm::vec3 const& center, float radius, std::shared_ptr<Material> material, std::string const& name);
 
     ~Sphere(){std::cout <<"Sphere destructor used."<<std::endl;}
 

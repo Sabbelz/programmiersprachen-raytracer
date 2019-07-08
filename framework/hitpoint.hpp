@@ -3,13 +3,16 @@
 #include <string>
 #include <glm/vec3.hpp>
 #include "color.hpp"
+#include <memory>
+#include "Material.hpp"
 
 struct hitpoint{
     bool hit_ = false;
     float distance_ = __FLT_MAX__;
     std::string name_ = "missed";
-    Color color_ {0.0f, 0.0f, 0.0f};
+    std::shared_ptr<Material> material_;
     glm::vec3 direction_;
+    glm::vec3 hitpoint_;
 
 };
 
