@@ -22,7 +22,7 @@ class Shape{
     virtual float volume() const = 0;
     virtual hitpoint intersect(Ray const& r) const = 0;
 
-    virtual std::ostream& print(std::ostream& os) const = 0;
+    virtual std::ostream& print(std::ostream& os) const;
 
     protected:
     Color color_;
