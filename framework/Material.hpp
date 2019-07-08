@@ -5,9 +5,9 @@
 struct Material{
     std::string name_;
 
+    Color ka;
     Color kd;
     Color ks;
-    Color ka;
 
     float m;
 

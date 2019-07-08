@@ -63,17 +63,22 @@ REQUIRE (distance == Approx(4.0f));
 TEST_CASE("intersect", "[its]"){
   Sphere test{glm::vec3{5.0f, 5.0f, 5.0f}, 1.0f};
   Sphere test_1{glm::vec3{10.0f, 10.0f, 10.0f}, 1.0f};
+  Box box{glm::vec3{10.0f, 10.0f, 10.0f}, glm::vec3{200.0f, 150.0f, 150.0f}};
 
   Ray ray{glm::vec3{0.0f,0.0f,0.0f}, glm::vec3{1.0f, 1.0f, 1.0f}};
   Ray raymissed{glm::vec3{0.0f,0.0f,0.0f}, glm::vec3{0.0f, -1.0f, 0.0f}};
 
   hitpoint hit = test.intersect(ray);
+  hitpoint hit_box = box.intersect(ray);
+  hitpoint missed_box = box.intersect(raymissed);
   hitpoint missed = test_1.intersect(raymissed);
 
   REQUIRE(hit.hit_ == true);
   REQUIRE(hit.name_== "default");
   REQUIRE(missed.hit_ == false);
   REQUIRE(missed.name_== "missed");
+  REQUIRE(hit_box.hit_ == false);
+  REQUIRE(missed_box.hit_ == false);
 
 }
 
