@@ -5,6 +5,27 @@
 #include "Material.hpp"
 #include "scene.hpp"
 
+std::shared_ptr<Material> Scene::search_vec(std::string s){
+    for( std::shared_ptr<Material> m : vec_mat_){
+        if(m->name_ == s){
+            return m;
+        }
+    }
+}
+std::shared_ptr<Material> Scene::search_set(std::string s){
+    for( std::shared_ptr<Material> m : set_mat_){
+        // auto it = set_mat_.find(m);
+        if(s == m->name_){
+            return m;
+        }
+    }
+}
+std::shared_ptr<Material> Scene::search_map(std::string s){
+  auto it = map_mat_.find(s);
+  if (it != map_mat_.end()){
+    return it->second;
+  }
+}
 void creatematerial(Scene scene) {
     std::string line_buffer;
     std::ifstream in_scene_file;
@@ -49,8 +70,5 @@ void creatematerial(Scene scene) {
           }
       }
     }
-}
-
-void free_creatematerial(Scene scene) {
-// scene.creatematerial();
+    in_scene_file.close();
 }

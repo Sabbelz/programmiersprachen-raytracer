@@ -108,6 +108,10 @@ TEST_CASE("Create Materials", "[scene]")
 {
   Scene sc{};
   creatematerial(sc);
+
+  sc.search_map("blue");
+  sc.search_set("red");
+  //sc.search_vec("blue");
 }
 
 int main(int argc, char *argv[])
