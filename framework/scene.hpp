@@ -14,4 +14,6 @@ struct Scene{
     std::map<std::string, std::shared_ptr<Material>> map_mat_;
 };
 
+    void creatematerial(Scene scene);
+
 #endif

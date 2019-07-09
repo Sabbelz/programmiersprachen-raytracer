@@ -3,10 +3,13 @@
 #include <sstream>
 #include <string>
 #include "Material.hpp"
+#include "scene.hpp"
 
-int main(int argc, char** argv) {
+void creatematerial(Scene scene) {
     std::string line_buffer;
-    std::ifstream in_scene_file(argv[1]);
+    std::ifstream in_scene_file;
+
+    in_scene_file.open("materials.sdf");
 
     while (std::getline(in_scene_file, line_buffer))
     {
@@ -38,9 +41,16 @@ int main(int argc, char** argv) {
               line_string_stream >> flt;            
 
               Material mat{material_name,{ka_r,ka_g,ka_b},{kd_r,kd_g,kd_b},{ks_r,ks_g,ks_b},flt};
+              auto material = std::make_shared<Material>(mat);
               std::cout << mat << std::endl;
+              scene.vec_mat_.push_back(material);
+              scene.set_mat_.insert(material);
+              scene.map_mat_.emplace(material_name,material);
           }
       }
     }
+}
 
+void free_creatematerial(Scene scene) {
+// scene.creatematerial();
 }

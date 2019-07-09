@@ -7,6 +7,7 @@
 #include "../framework/box.hpp"
 #include "../framework/color.hpp"
 #include "../framework/Material.hpp"
+#include "../framework/scene.hpp"
 
 TEST_CASE("area/volume", "[arvo]"){
   Box test;
@@ -102,6 +103,13 @@ TEST_CASE("Sphere")
   Sphere s123{{0.0f,0.0f,0.0f}, 3.0f, material , "Hier_könnte_ihre_Werbung_stehen"};
   std::cout << "\n" << s123 <<std::endl;
 }
+
+TEST_CASE("Create Materials", "[scene]")
+{
+  Scene sc{};
+  creatematerial(sc);
+}
+
 int main(int argc, char *argv[])
 {
   return Catch::Session().run(argc, argv);
