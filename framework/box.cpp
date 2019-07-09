@@ -42,6 +42,7 @@ hitpoint Box::intersect(Ray const& r)const{
     Ray n{r};
     hitpoint hit{};
     bool washit = false;
+    float tmin = FLT_MAX;
 
     float t = (min_.x-n.origin.x)/(glm::normalize(n.direction)).x;
     glm::vec3 p_x = n.origin + t*(glm::normalize(n.direction)); 
@@ -50,6 +51,8 @@ hitpoint Box::intersect(Ray const& r)const{
     && p_x.z <= max_.z && p_x.z >= min_.z){
         //std::cout << "Der angegebene Punkt liegt innerhalb des Objektes.\n";
         washit = true;
+        tmin = t;
+        hit.hitpoint_ = p_x;
     }
 
     float t_max_x = (max_.x-n.origin.x)/(glm::normalize(n.direction)).x;
@@ -59,6 +62,11 @@ hitpoint Box::intersect(Ray const& r)const{
     && p_x2.z <= max_.z && p_x2.z >= min_.z){
         //std::cout << "Der angegebene Punkt liegt innerhalb des Objektes.\n";
         washit = true;
+        if(tmin > t_max_x)
+        {
+            hit.hitpoint_ = p_x2;
+            tmin = t_max_x;
+        }
     }
 
     float t_min_y = (min_.y-n.origin.y)/(glm::normalize(n.direction)).y;
@@ -68,6 +76,12 @@ hitpoint Box::intersect(Ray const& r)const{
     && p_y.z <= max_.z && p_y.z >= min_.z){
         //std::cout << "Der angegebene Punkt liegt innerhalb des Objektes.\n";
         washit = true;
+
+        if(tmin > t_min_y)
+        {
+            hit.hitpoint_ = p_y;
+            tmin = t_min_y;
+        }
     }
 
     float t_max_y = (max_.y-n.origin.y)/(glm::normalize(n.direction)).y;
@@ -77,6 +91,12 @@ hitpoint Box::intersect(Ray const& r)const{
     && p_y2.z <= max_.z && p_y2.z >= min_.z){
         //std::cout << "Der angegebene Punkt liegt innerhalb des Objektes.\n";
         washit = true;
+
+        if(tmin > t_max_y)
+        {
+            hit.hitpoint_ = p_y2;
+            tmin = t_max_y;
+        }
     }
     
     float t_min_z = (min_.z-n.origin.z)/(glm::normalize(n.direction)).z;
@@ -86,6 +106,13 @@ hitpoint Box::intersect(Ray const& r)const{
     && p_z.x <= max_.x && p_z.x >= min_.x){
         //std::cout << "Der angegebene Punkt liegt innerhalb des Objektes.\n";
         washit = true;
+
+
+        if(tmin > t_min_z)
+        {
+            hit.hitpoint_ = p_z;
+            tmin = t_min_z;
+        }
     }
 
     float t_max_z = (max_.z-n.origin.z)/(glm::normalize(n.direction)).z;
@@ -95,6 +122,13 @@ hitpoint Box::intersect(Ray const& r)const{
     && p_z2.x <= max_.x && p_z2.x >= min_.x){
         //std::cout << "Der angegebene Punkt liegt innerhalb des Objektes.\n";
         washit = true;
+
+
+        if(tmin > t_max_z)
+        {
+            hit.hitpoint_ = p_z2;
+            tmin = t_max_z;
+        }
     }
     
 
@@ -104,7 +138,7 @@ hitpoint Box::intersect(Ray const& r)const{
        hit.direction_ = n.direction;
        hit.distance_ = t;
        hit.name_ = name_;
-       hit.hitpoint_ = p_x;
+       
     }
     return hit;
 }

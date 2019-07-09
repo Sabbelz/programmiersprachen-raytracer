@@ -6,6 +6,7 @@
 #include "../framework/shape.hpp"
 #include "../framework/box.hpp"
 #include "../framework/color.hpp"
+#include "../framework/Material.hpp"
 
 TEST_CASE("area/volume", "[arvo]"){
   Box test;
@@ -24,17 +25,17 @@ TEST_CASE("area/volume", "[arvo]"){
   REQUIRE(test_3.volume() == Approx(4.18879f));
 }
 
-TEST_CASE("print", "[pr]"){
-  Box test;
+// TEST_CASE("print", "[pr]"){
+//   Box test;
 
-  Sphere test_2;
+//   Sphere test_2;
 
-  test.print(std::cout);
+//   test.print(std::cout);
 
-  test_2.print(std::cout);
+//   test_2.print(std::cout);
 
   
-}
+// }
 TEST_CASE ("intersect_ray_sphere", "[intersect]"){
 
 // Ray
@@ -92,6 +93,15 @@ TEST_CASE("intersect", "[its]"){
   delete s1;
   delete s2;
 }*/
+
+TEST_CASE("Sphere")
+{
+  Material mat{"mat", {0.0f,0.0f,0.0f},{1.0f,1.0f,1.0f},{1.0f,1.0f,1.0f}, 2.0f};
+  auto material = std::make_shared<Material>(mat);
+  //auto mat = std::make_shared<Material>("mat", Color{0.0f,0.0f,0.0f},Color{1.0f,1.0f,1.0f},Color{1.0f,1.0f,1.0f}, 2.0f);
+  Sphere s123{{0.0f,0.0f,0.0f}, 3.0f, material , "Hier_könnte_ihre_Werbung_stehen"};
+  std::cout << "\n" << s123 <<std::endl;
+}
 int main(int argc, char *argv[])
 {
   return Catch::Session().run(argc, argv);

@@ -9,8 +9,8 @@ material_{material},
 name_{name}{/*std::cout << "Shape constructor used." << std::endl;*/}
 
 std::ostream& Shape::print(std::ostream& os) const{
-    return os << "Material: " << material_
-              << " Name: " << name_ << "\n";  
+    return os << "Material: " << *material_
+              << "Name: " << name_ << "\n";  
 }
 
 std::ostream& operator<<(std::ostream& os, Shape const& s){
