@@ -14,6 +14,7 @@ std::shared_ptr<Material> Scene::search_vec(std::string s){
 }
 std::shared_ptr<Material> Scene::search_set(std::string s){
     for( std::shared_ptr<Material> m : set_mat_){
+        // auto it = set_mat_.find(m);
         if(s == m->name_){
             return m;
         }
@@ -25,7 +26,7 @@ std::shared_ptr<Material> Scene::search_map(std::string s){
     return it->second;
   }
 }
-void creatematerial(Scene &scene) {
+void creatematerial(Scene& scene) {
     std::string line_buffer;
     std::ifstream in_scene_file;
 
@@ -63,7 +64,6 @@ void creatematerial(Scene &scene) {
               Material mat{material_name,{ka_r,ka_g,ka_b},{kd_r,kd_g,kd_b},{ks_r,ks_g,ks_b},flt};
               auto material = std::make_shared<Material>(mat);
               std::cout << mat << std::endl;
-              
               scene.vec_mat_.push_back(material);
               scene.set_mat_.insert(material);
               scene.map_mat_.emplace(material_name,material);
