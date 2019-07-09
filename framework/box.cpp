@@ -6,14 +6,30 @@ max_{0.0f},
 min_{0.0f}{/*std::cout << "Box constructor used."<<std::endl;*/}
 
 Box::Box(glm::vec3 const& max, glm::vec3 const& min):
-Shape{},
-max_{max},
-min_{min}{/*std::cout << "Box constructor used."<<std::endl;*/}
+Shape{}
+{if(max.x > min.x){
+    max_= max;
+    min_= min;
+    }
+    else
+    {
+        min_ = max;
+        max_ = min;
+    }  
+}
 
 Box::Box(glm::vec3 const& max, glm::vec3 const& min, std::string const& name, std::shared_ptr<Material> material):
-Shape{material, name},
-max_{max},
-min_{min}{/* std::cout << "Box constructor used."<<std::endl;*/}
+Shape{material, name}
+{if(max.x > min.x){
+    max_= max;
+    min_= min;
+    }
+    else
+    {
+        min_ = max;
+        max_ = min;
+    }
+}
 
 float Box::area() const{
     float a = max_.x - min_.y;
