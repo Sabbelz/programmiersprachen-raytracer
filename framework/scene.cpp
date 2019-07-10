@@ -25,6 +25,8 @@ std::shared_ptr<Material> Scene::search_map(std::string s){
   if (it != map_mat_.end()){
     return it->second;
   }
+  std::shared_ptr<Material> ptr(nullptr);
+  return ptr;
 }
 void creatematerial(Scene& scene) {
     std::string line_buffer;
