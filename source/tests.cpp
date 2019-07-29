@@ -106,17 +106,16 @@ TEST_CASE("Sphere")
 
 TEST_CASE("Create Materials", "[scene]")
 {
-  Scene sc{};
-  creatematerial(sc);
+  Scene sc = creatematerial("materials.sdf");
   
   auto ptr = sc.search_map("blue");
   if(ptr != nullptr){
     std::cout << "In der Map:" <<*ptr << std::endl;
   }
-  auto ptr2 = sc.search_set("red");
-  if(ptr2 != nullptr){
-    std::cout << "In dem Set:" <<*ptr2 <<std::endl;
-  }
+  // auto ptr2 = sc.search_set("red");
+  // if(ptr2 != nullptr){
+  //   std::cout << "In dem Set:" <<*ptr2 <<std::endl;
+  // }
   auto ptr3 = sc.search_vec("green");
   if(ptr3 != nullptr){
     std::cout << "In dem Vec:" <<*ptr3 <<std::endl;

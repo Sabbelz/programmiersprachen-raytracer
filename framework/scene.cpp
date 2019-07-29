@@ -12,14 +12,11 @@ std::shared_ptr<Material> Scene::search_vec(std::string s){
         }
     }
 }
-std::shared_ptr<Material> Scene::search_set(std::string s){
-    for( std::shared_ptr<Material> m : set_mat_){
-        // auto it = set_mat_.find(m);
-        if(s == m->name_){
-            return m;
-        }
-    }
-}
+// std::shared_ptr<Material> Scene::search_set(std::string s){
+//     std::shared_ptr<Material> f;
+//     f->name_ = s;
+//     set_mat_.find(f->name_);
+// }
 std::shared_ptr<Material> Scene::search_map(std::string s){
   auto it = map_mat_.find(s);
   if (it != map_mat_.end()){
@@ -28,11 +25,12 @@ std::shared_ptr<Material> Scene::search_map(std::string s){
   std::shared_ptr<Material> ptr(nullptr);
   return ptr;
 }
-void creatematerial(Scene& scene) {
+Scene creatematerial(std::string s) {
     std::string line_buffer;
     std::ifstream in_scene_file;
+    Scene scene;
 
-    in_scene_file.open("materials.sdf");
+    in_scene_file.open(s);
 
     while (std::getline(in_scene_file, line_buffer))
     {
@@ -73,4 +71,5 @@ void creatematerial(Scene& scene) {
       }
     }
     in_scene_file.close();
+    return scene;
 }

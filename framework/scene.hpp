@@ -18,6 +18,6 @@ struct Scene{
     std::shared_ptr<Material> search_map(std::string s);
 };
 
-    void creatematerial(Scene &scene);
+    Scene creatematerial(std::string s);
 
 #endif
