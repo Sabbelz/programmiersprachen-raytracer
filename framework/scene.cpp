@@ -75,27 +75,27 @@ Scene creatematerial(std::string const& s) {
 }
 
 
-static void read_SDF(std::string const& s, Scene& sc){
-    std::ifstream i;
-    i.open(s);
-    if(!i.is_open()){
-        std::cout << "Error occured while opening the given file!" << std::endl;
-    } else{
-        std::cout << "File successfully opened" << std::endl;
-        std::string line;
-        std::map<std::string, std::shared_ptr<Shape>> map_shape;
-        std::map<std::string, std::shared_ptr<Composite>> map_composite;
-        std::shared_ptr<Composite> comp_obj = nullptr;
-        while(std::getline(i,line)){
-            deserializeObjects(sc, line, map_shape, map_composite, comp_obj);
-        }
-        if(sc.root_comp_ != nullptr && comp_obj != nullptr){
-            sc.root_comp_->add(comp_obj);
-        }
-        else if(sc.root_comp_ == nullptr){
-            sc.root_comp_ = comp_obj;
-        }
-        sc.root_comp_->creatBoundingBox();
-        std::cout << "Scene successfully loaded" << std::endl;
-    }
-}
+// static void read_SDF(std::string const& s, Scene& sc){
+//     std::ifstream i;
+//     i.open(s);
+//     if(!i.is_open()){
+//         std::cout << "Error occured while opening the given file!" << std::endl;
+//     } else{
+//         std::cout << "File successfully opened" << std::endl;
+//         std::string line;
+//         std::map<std::string, std::shared_ptr<Shape>> map_shape;
+//         std::map<std::string, std::shared_ptr<Composite>> map_composite;
+//         std::shared_ptr<Composite> comp_obj = nullptr;
+//         while(std::getline(i,line)){
+//             deserializeObjects(sc, line, map_shape, map_composite, comp_obj);
+//         }
+//         if(sc.root_comp_ != nullptr && comp_obj != nullptr){
+//             sc.root_comp_->add(comp_obj);
+//         }
+//         else if(sc.root_comp_ == nullptr){
+//             sc.root_comp_ = comp_obj;
+//         }
+//         sc.root_comp_->creatBoundingBox();
+//         std::cout << "Scene successfully loaded" << std::endl;
+//     }
+//}

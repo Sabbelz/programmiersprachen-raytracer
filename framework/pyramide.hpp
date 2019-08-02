@@ -4,15 +4,19 @@
 #include "shape.hpp"
 
 class Pyramide: public Shape{
-
     public:
 
     Pyramide();
     Pyramide(glm::vec3 const& pmin,float side, float height);
     Pyramide(glm::vec3 const& pmin,float side, float height, std::string const& name, std::shared_ptr<Material> material);
 
-    ~Pyramide();
+    ~Pyramide(){/*Destructor */}
 
+    float area() const override;
+    float volume() const override;
+    hitpoint intersect(Ray const& r) const override;
+
+    std::ostream& print(std::ostream& os) const override;
 
     private:
     glm::vec3 pmin_;

@@ -8,6 +8,7 @@
 #include "../framework/color.hpp"
 #include "../framework/Material.hpp"
 #include "../framework/scene.hpp"
+#include "../framework/pyramide.hpp"
 
 TEST_CASE("area/volume", "[arvo]"){
   Box test;
@@ -109,18 +110,30 @@ TEST_CASE("Create Materials", "[scene]")
   Scene sc = creatematerial("materials.sdf");
   
   auto ptr = sc.search_map("blue");
-  if(ptr != nullptr){
-    std::cout << "In der Map:" <<*ptr << std::endl;
-  }
+  std::cout << "In der Map:" <<*ptr << std::endl;
   // auto ptr2 = sc.search_set("red");
-  // if(ptr2 != nullptr){
-  //   std::cout << "In dem Set:" <<*ptr2 <<std::endl;
-  // }
+  // std::cout << "In dem Set:" <<*ptr2 <<std::endl;
   auto ptr3 = sc.search_vec("green");
-  if(ptr3 != nullptr){
-    std::cout << "In dem Vec:" <<*ptr3 <<std::endl;
-  }
+  std::cout << "In dem Vec:" <<*ptr3 <<std::endl;
+}
 
+TEST_CASE("Pyramide print", "[ostream, print]")
+{
+  Material mat{"mat", {0.0f,0.0f,0.0f},{1.0f,1.0f,1.0f},{1.0f,1.0f,1.0f}, 2.0f};
+  auto material = std::make_shared<Material>(mat);
+
+  Pyramide py1{{0.0f,0.0f,0.0f},10.0f,13.0f, "Osiris", material};
+  py1.print(std::cout);
+}
+
+TEST_CASE("Pyramide area/volume", "[area, volume]")
+{
+   Material mat{"mat", {0.0f,0.0f,0.0f},{1.0f,1.0f,1.0f},{1.0f,1.0f,1.0f}, 2.0f};
+  auto material = std::make_shared<Material>(mat);
+
+  Pyramide py2{{0.0f,0.0f,0.0f},10.0f,13.0f, "Tutanchamun", material}; 
+  REQUIRE(py2.volume() == Approx(433.333f));
+  REQUIRE(py2.area() == Approx(378.568f));
 }
 
 int main(int argc, char *argv[])

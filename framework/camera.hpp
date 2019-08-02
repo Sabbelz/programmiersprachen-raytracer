@@ -7,4 +7,5 @@ struct Camera{
     glm::vec3 dir_;
     std::string name_;
 };
+
 #endif
