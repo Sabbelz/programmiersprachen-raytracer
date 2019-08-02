@@ -5,7 +5,7 @@
 #include "Material.hpp"
 #include "scene.hpp"
 
-std::shared_ptr<Material> Scene::search_vec(std::string s){
+std::shared_ptr<Material> Scene::search_vec(std::string const& s){
     for( std::shared_ptr<Material> m : vec_mat_){
         if(m->name_ == s){
             return m;
@@ -17,7 +17,7 @@ std::shared_ptr<Material> Scene::search_vec(std::string s){
 //     f->name_ = s;
 //     set_mat_.find(f->name_);
 // }
-std::shared_ptr<Material> Scene::search_map(std::string s){
+std::shared_ptr<Material> Scene::search_map(std::string const& s){
   auto it = map_mat_.find(s);
   if (it != map_mat_.end()){
     return it->second;
@@ -25,7 +25,7 @@ std::shared_ptr<Material> Scene::search_map(std::string s){
   std::shared_ptr<Material> ptr(nullptr);
   return ptr;
 }
-Scene creatematerial(std::string s) {
+Scene creatematerial(std::string const& s) {
     std::string line_buffer;
     std::ifstream in_scene_file;
     Scene scene;
@@ -75,7 +75,7 @@ Scene creatematerial(std::string s) {
 }
 
 
-static void read_SDF(std::string s, Scene& sc){
+static void read_SDF(std::string const& s, Scene& sc){
     std::ifstream i;
     i.open(s);
     if(!i.is_open()){
@@ -87,7 +87,7 @@ static void read_SDF(std::string s, Scene& sc){
         std::map<std::string, std::shared_ptr<Composite>> map_composite;
         std::shared_ptr<Composite> comp_obj = nullptr;
         while(std::getline(i,line)){
-            deserializeObjects(scene, line, map_shape, map_composite, comp_obj);
+            deserializeObjects(sc, line, map_shape, map_composite, comp_obj);
         }
         if(sc.root_comp_ != nullptr && comp_obj != nullptr){
             sc.root_comp_->add(comp_obj);

@@ -11,6 +11,7 @@
 #include "ambiente.hpp"
 #include "camera.hpp"
 #include "light.hpp"
+#include "composite.hpp"
 
 struct Scene{
 
@@ -21,12 +22,12 @@ struct Scene{
     std::shared_ptr<Camera> camera_;
     std::shared_ptr<Composite> root_comp_;
 
-    std::shared_ptr<Material> search_vec(std::string s);
-    std::shared_ptr<Material> search_set(std::string s);
-    std::shared_ptr<Material> search_map(std::string s);
+    std::shared_ptr<Material> search_vec(std::string const& s);
+    std::shared_ptr<Material> search_set(std::string const& s);
+    std::shared_ptr<Material> search_map(std::string const& s);
 };
 
-    Scene creatematerial(std::string s);
-    static void read_SDF(std::string s, Scene& scene);
+    Scene creatematerial(std::string const& s);
+    static void read_SDF(std::string const& s, Scene& scene);
 
 #endif
