@@ -35,7 +35,7 @@ d_{1.0f}{
 Camera::Camera(std::string name, glm::vec3 pos, glm::vec3 direction, float xAngle, float yAngle):
 name_{name},
 pos_{pos},
-direction_{direction},
+direction_{glm::normalize(direction)},
 xAngle_{xAngle},
 yAngle_{yAngle}{
     d_ = 0.5/(tan((xAngle_/2)*M_PI / 180.0));
