@@ -10,6 +10,7 @@ class Camera{
     public:
     Camera();
     Camera(std::string name, glm::vec3 pos, glm::vec3 direction, float xAngle, float yAngle);
+    ~Camera();
 
     private:
     std::string name_;
