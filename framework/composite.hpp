@@ -9,12 +9,18 @@
 
 class Composite : public Shape{
     public:
+
     Composite();
     Composite(std::string const& name);
     Composite(std::string const& name, std::vector<std::shared_ptr<Shape>> const& shapes, std::vector<std::shared_ptr<Composite>> const& comp);
     ~Composite();
 
     void createBoundingBox();
+
+    private:
+
+    std::vector<std::shared_ptr<Shape>> shapes_;
+    std::vector<std::shared_ptr<Composite>> composites_;
 };
 
 #endif
