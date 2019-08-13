@@ -21,7 +21,7 @@ class Renderer
 public:
   Renderer(unsigned w, unsigned h, std::string const& file);
 
-  void render();
+  void render(Scene const& s, int frames);
   void write(Pixel const& p);
 
   inline std::vector<Color> const& color_buffer() const

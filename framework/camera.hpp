@@ -6,41 +6,30 @@
 #include <cmath>
 #include "imageplane.hpp"
 
-class Camera{
-    public:
+struct Camera{
 
-    Camera();
-    Camera(std::string name, glm::vec3 pos, glm::vec3 direction, float xAngle, float yAngle):
-    name_(name), pos_(pos), direction_(direction), xAngle_(xAngle), yAngle_(yAngle){
+    Camera(std::string name, glm::vec3 pos, glm::vec3 direction, glm::vec3 up, unsigned int fieldOfView):
+    name_(name), pos_(pos), direction_(direction), up_(up), fieldOfView_(fieldOfView){
     rotationMat_ = glm::mat4x4{
         glm::vec4{1.0f,0.0f,0.0f,0.0f},
         glm::vec4{0.0f,1.0f,0.0f,0.0f},
         glm::vec4{0.0f,0.0f,1.0f,0.0f},
         glm::vec4{0.0f,0.0f,0.0f,1.0f}};
     }
-    ~Camera();
-
+    
     friend std::ostream& operator<<(std::ostream& os, Camera const& cam){
         os << "Name: " << cam.name_
             << "Position: " << cam.pos_.x << ", " << cam.pos_.y << ", " << cam.pos_.z
-            << "x Angle: " << cam.xAngle_
-            << "y Angle: " << cam.yAngle_ << std::endl;
+            << "Field of view: " << cam.fieldOfView_ << std::endl;
         return os;
     }
-
-    private:
 
     std::string name_;
     glm::vec3 pos_;
     glm::vec3 direction_; //normalized
-    float xAngle_; 
-    float yAngle_;
-    float d_; //distance to imageplane
+    glm::vec3 up_;
+    unsigned int fieldOfView_;
     glm::mat4x4 rotationMat_;
-    Imageplane imageplane;
-    
-    glm::vec3 raycast();
-
 };
 
 #endif
