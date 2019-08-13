@@ -42,3 +42,12 @@ yAngle_{yAngle}{
     imageplane.width_ = 1;
     imageplane.height_ = 2*d_*tan((yAngle/2)*M_PI / 180.0);
 }
+
+glm::vec3 Camera::raycast(){
+    float t = 1.0f;
+    int dy = 0.5*imageplane.height_;
+    int dx = 0.5*imageplane.width_;
+    glm::vec3 p = {0.0f,0.0f,0.0f};
+    glm::vec3 d = {dx,dy,d_};
+    p += t*d;
+}

@@ -12,7 +12,7 @@ class Camera{
     Camera();
     Camera(std::string name, glm::vec3 pos, glm::vec3 direction, float xAngle, float yAngle):
     name_(name), pos_(pos), direction_(direction), xAngle_(xAngle), yAngle_(yAngle){
-    mat_ = glm::mat4x4{
+    rotationMat_ = glm::mat4x4{
         glm::vec4{1.0f,0.0f,0.0f,0.0f},
         glm::vec4{0.0f,1.0f,0.0f,0.0f},
         glm::vec4{0.0f,0.0f,1.0f,0.0f},
@@ -36,8 +36,10 @@ class Camera{
     float xAngle_; 
     float yAngle_;
     float d_; //distance to imageplane
-    glm::mat4x4 mat_;
+    glm::mat4x4 rotationMat_;
     Imageplane imageplane;
+    
+    glm::vec3 raycast();
 
 };
 
