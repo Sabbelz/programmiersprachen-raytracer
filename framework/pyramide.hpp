@@ -21,7 +21,7 @@ class Pyramide: public Shape{
     private:
     glm::vec3 pmin_;
     glm::vec3 pmax_;
-    glm::vec3 tip_;
+    glm::vec3 apex_;
     float side_;
     float height_;
 };
