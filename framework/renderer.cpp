@@ -8,7 +8,6 @@
 // -----------------------------------------------------------------------------
 
 #include "renderer.hpp"
-#include "scene.hpp"
 #include "pixel.hpp"
 
 Renderer::Renderer(unsigned w, unsigned h, std::string const& file)
@@ -23,7 +22,7 @@ void Renderer::render(Scene const& s, int frames)
 {
   double d = (width_/2)/tan((s.camera_->fieldOfView_/2)*M_PI/180);
 
-  /* Kameratransformation (Setie 40)   */
+  /* Kameratransformation (Seite 40)   */
 
   glm::vec3 n = glm::normalize(s.camera_->direction_);
   glm::vec3 up = s.camera_->up_;
@@ -96,4 +95,15 @@ void Renderer::write(Pixel const& p)
   }
 
   ppm_.write(p);
+}
+
+Ray rotateRay(Ray const& ray, glm::mat4 m){
+  glm::vec4 origin {ray.origin, 1.0f};
+  glm::vec4 direction {ray.direction, 0.0f};
+
+  origin = m * origin;
+  direction = m * direction;
+
+  Ray value{{origin.x, origin.y, origin.z},{direction.x, direction.y, direction.z}};
+  return value;
 }

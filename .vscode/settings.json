@@ -45,6 +45,16 @@
         "typeinfo": "cpp",
         "utility": "cpp",
         "variant": "cpp",
-        "list": "cpp"
+        "list": "cpp",
+        "atomic": "cpp",
+        "algorithm": "cpp",
+        "iterator": "cpp",
+        "map": "cpp",
+        "memory_resource": "cpp",
+        "random": "cpp",
+        "regex": "cpp",
+        "set": "cpp",
+        "string": "cpp",
+        "thread": "cpp"
     }
 }

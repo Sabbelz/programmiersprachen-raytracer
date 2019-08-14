@@ -10,6 +10,7 @@
 #ifndef BUW_RENDERER_HPP
 #define BUW_RENDERER_HPP
 
+#include "scene.hpp"
 #include "color.hpp"
 #include "pixel.hpp"
 #include "ppmwriter.hpp"
@@ -36,5 +37,7 @@ private:
   std::string filename_;
   PpmWriter ppm_;
 };
+
+Ray rotateRay(Ray const& ray, glm::mat4 m);
 
 #endif // #ifndef BUW_RENDERER_HPP
