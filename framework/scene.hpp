@@ -18,9 +18,11 @@ struct Scene{
     std::vector<std::shared_ptr<Material>> vec_mat_;
     std::set<std::shared_ptr<Material>> set_mat_;
     std::map<std::string, std::shared_ptr<Material>> map_mat_;
+
     std::shared_ptr<Ambiente> ambiente_;
     std::shared_ptr<Camera> camera_;
-    std::shared_ptr<Composite> root_comp_;
+    std::shared_ptr<Shape> root_comp_;
+    std::vector<std::shared_ptr<Light>> light_;
 
     std::shared_ptr<Material> search_vec(std::string const& s);
     std::shared_ptr<Material> search_set(std::string const& s);

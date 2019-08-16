@@ -37,5 +37,14 @@ std::vector<std::shared_ptr<Shape>> Composite::get_Shape(std::vector<std::shared
 }
 
 hitpoint Composite::intersect(Ray const& r) const{
-auto container = get_Shape(container);
+    hitpoint temp;
+    hitpoint closest;
+
+    for(std::shared_ptr<Shape> s: shapes_){
+        temp = s->intersect(r);
+        if(temp.distance_ <= closest.distance_){
+            closest = temp;
+        }    
+    }
+return closest;
 }

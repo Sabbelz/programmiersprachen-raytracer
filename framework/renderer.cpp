@@ -10,26 +10,27 @@
 #include "renderer.hpp"
 #include "pixel.hpp"
 
-Renderer::Renderer(unsigned w, unsigned h, std::string const& file)
+Renderer::Renderer(unsigned w, unsigned h, std::string const& file, Scene const& scene)
   : width_(w)
   , height_(h)
+  , scene_(scene)
   , color_buffer_(w*h, Color(0.0, 0.0, 0.0))
   , filename_(file)
   , ppm_(width_, height_)
 {}
 
-void Renderer::render(Scene const& s, int frames)
+void Renderer::render()
 {
-  double d = (width_/2)/tan((s.camera_->fieldOfView_/2)*M_PI/180);
+  double d = (width_/2)/tan((scene_.camera_->fieldOfView_/2)*M_PI/180);
 
   /* Kameratransformation (Seite 40)   */
 
-  glm::vec3 n = glm::normalize(s.camera_->direction_);
-  glm::vec3 up = s.camera_->up_;
+  glm::vec3 n = glm::normalize(scene_.camera_->direction_);
+  glm::vec3 up = scene_.camera_->up_;
   glm::vec3 u = glm::normalize(glm::cross(n,up));
   glm::vec3 v = glm::normalize(glm::cross(u,n));
 
-  s.camera_->rotationMat_ = glm::mat4{glm::vec4{u,0.0f},glm::vec4{v,0.0f},glm::vec4{-n,0.0f},glm::vec4{0.0f,0.0f,0.0f,1.0f}};
+  // scene_.camera_->rotationMat_ = glm::mat4{glm::vec4{u,0.0f},glm::vec4{v,0.0f},glm::vec4{-n,0.0f},glm::vec4{0.0f,0.0f,0.0f,1.0f}};
 
   for (int x = 0; x < width_; ++x) {
     
@@ -38,11 +39,11 @@ void Renderer::render(Scene const& s, int frames)
       Pixel p(x,y);
 
       /* creating the camera ray */
-      glm::vec3 origin = s.camera_->pos_;
-      glm::vec3 direction = glm::normalize(s.camera_->direction_);
+      glm::vec3 origin = scene_.camera_->pos_;
+      glm::vec3 direction = glm::normalize(scene_.camera_->direction_);
 
       /* changing the direction depending on the adressed pixel */
-      direction += glm::vec3{x-(0.5*width_),y-(0.0*height_),-d};
+      direction += glm::vec3{x-(0.5*width_),y-(0.5*height_),-d};
 
       Ray ray{origin, glm::normalize(direction)};
       /**
@@ -53,14 +54,15 @@ void Renderer::render(Scene const& s, int frames)
       /**
        * Intersecion and color calculation
        */
-      // bool hit = s.root_comp_->intersect(ray).hit_;
+      hitpoint hit = scene_.root_comp_->intersect(ray);
 
-      // if(hit) {
-      //   Color current = calculate_color();
-      //   p.color = current;
-      // }
-
-
+      if(hit.hit_) {
+        Color current = calculate_color(hit, 2);
+        p.color = current;
+      } else {
+        p.color = scene_.ambiente_->col_;
+      }
+      p.color = tonemapping(p.color);
       write(p);
     }
   }
@@ -79,6 +81,33 @@ void Renderer::render(Scene const& s, int frames)
   //   }
   // }
   // ppm_.save(filename_);
+}
+
+Color Renderer::calculate_color(hitpoint const& hit, int counter){
+  Color color {0.0f,0.0f,0.0f};
+  for(auto l : scene_.light_){
+    color += calculate_light(hit, l);
+  }
+  return color;
+}
+
+Color Renderer::tonemapping(Color const& clr){
+  Color color{0.0f,0.0f,0.0f};
+  color.r = clr.r/clr.r+1;
+  color.b = clr.b/clr.b+1;
+  color.g = clr.g/clr.g+1;
+  return color;
+}
+
+Color Renderer::calculate_light(hitpoint const& hit, std::shared_ptr<Light> light){
+  Ray begin {hit.hitpoint_, glm::normalize(light->pos_-hit.hitpoint_)};
+  hitpoint h = scene_.root_comp_->intersect(begin);
+  Color color{0.0f,0.0f,0.0f};
+
+  if(!(h.hit_)){
+    color = light->col_; //Farberechnung fehlt
+  }
+  return color;
 }
 
 void Renderer::write(Pixel const& p)

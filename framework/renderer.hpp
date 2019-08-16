@@ -20,10 +20,13 @@
 class Renderer
 {
 public:
-  Renderer(unsigned w, unsigned h, std::string const& file);
+  Renderer(unsigned w, unsigned h, std::string const& file, Scene const& scene);
 
-  void render(Scene const& s, int frames);
+  void render();
   void write(Pixel const& p);
+  Color calculate_light(hitpoint const& hit, std::shared_ptr<Light> light);
+  Color calculate_color(hitpoint const& hit, int counter);
+  Color tonemapping(Color const& clr);
 
   inline std::vector<Color> const& color_buffer() const
   {
@@ -31,6 +34,7 @@ public:
   }
 
 private:
+  Scene scene_;
   unsigned width_;
   unsigned height_;
   std::vector<Color> color_buffer_;

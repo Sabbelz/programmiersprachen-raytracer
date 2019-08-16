@@ -117,24 +117,24 @@ TEST_CASE("Create Materials", "[scene]")
   std::cout << "In dem Vec:" <<*ptr3 <<std::endl;
 }
 
-TEST_CASE("Pyramide print", "[ostream, print]")
-{
-  Material mat{"mat", {0.0f,0.0f,0.0f},{1.0f,1.0f,1.0f},{1.0f,1.0f,1.0f}, 2.0f};
-  auto material = std::make_shared<Material>(mat);
+// TEST_CASE("Pyramide print", "[ostream, print]")
+// {
+//   Material mat{"mat", {0.0f,0.0f,0.0f},{1.0f,1.0f,1.0f},{1.0f,1.0f,1.0f}, 2.0f};
+//   auto material = std::make_shared<Material>(mat);
 
-  Pyramide py1{{0.0f,0.0f,0.0f},10.0f,13.0f, "Osiris", material};
-  py1.print(std::cout);
-}
+//   Pyramide py1{{0.0f,0.0f,0.0f},10.0f,13.0f, "Osiris", material};
+//   py1.print(std::cout);
+// }
 
-TEST_CASE("Pyramide area/volume", "[area, volume]")
-{
-   Material mat{"mat", {0.0f,0.0f,0.0f},{1.0f,1.0f,1.0f},{1.0f,1.0f,1.0f}, 2.0f};
-  auto material = std::make_shared<Material>(mat);
+// TEST_CASE("Pyramide area/volume", "[area, volume]")
+// {
+//    Material mat{"mat", {0.0f,0.0f,0.0f},{1.0f,1.0f,1.0f},{1.0f,1.0f,1.0f}, 2.0f};
+//   auto material = std::make_shared<Material>(mat);
 
-  Pyramide py2{{0.0f,0.0f,0.0f},10.0f,13.0f, "Tutanchamun", material}; 
-  REQUIRE(py2.volume() == Approx(433.333f));
-  REQUIRE(py2.area() == Approx(378.568f));
-}
+//   Pyramide py2{{0.0f,0.0f,0.0f},10.0f,13.0f, "Tutanchamun", material}; 
+//   REQUIRE(py2.volume() == Approx(433.333f));
+//   REQUIRE(py2.area() == Approx(378.568f));
+// }
 
 int main(int argc, char *argv[])
 {
