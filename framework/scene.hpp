@@ -29,7 +29,7 @@ struct Scene{
     std::shared_ptr<Material> search_map(std::string const& s);
 };
 
-    Scene creatematerial(std::string const& s);
-    static void read_SDF(std::string const& s, Scene& scene);
+    //Scene creatematerial(std::string const& s);
+    Scene read_SDF(std::string const& s);
 
 #endif
