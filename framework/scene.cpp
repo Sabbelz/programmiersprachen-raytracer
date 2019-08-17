@@ -169,7 +169,7 @@ Scene read_SDF(std::string const& s) {
             auto l = std::make_shared<Light>(light);
             scene.light_.push_back(l);
           }
-          if("pyramide" == identifier){
+                    if("pyramide" == identifier){
             std::string pyramide_name;
             glm::vec3 pmin, pmax, apex;
             float side, height;

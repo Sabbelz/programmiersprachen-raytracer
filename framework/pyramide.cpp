@@ -14,7 +14,7 @@ Shape{},
 height_{height},
 side_{side},
 pmin_{pmin},
-pmax_(pmin.x+height,pmin.y,pmin.z+height)
+pmax_(pmin.x+side,pmin.y,pmin.z+side)
 {
     apex_ = 0.5f * (pmax_ - pmin_);
     apex_.y += height;
@@ -25,7 +25,7 @@ Shape{material, name},
 height_{height},
 side_{side},
 pmin_{pmin},
-pmax_(pmin.x+height,pmin.y,pmin.z+height)
+pmax_(pmin.x+side,pmin.y,pmin.z+side)
 {
     apex_ = 0.5f * (pmax_ - pmin_);
     apex_.y += height;
