@@ -7,6 +7,7 @@
 #include "shape.hpp"
 #include "sphere.hpp"
 #include "box.hpp"
+#include "pyramide.hpp"
 
 std::shared_ptr<Material> Scene::search_vec(std::string const& s){
     for( std::shared_ptr<Material> m : vec_mat_){
@@ -167,6 +168,34 @@ Scene read_SDF(std::string const& s) {
             Light light{light_name, pos, {clr_r, clr_g, clr_b}, brightness};
             auto l = std::make_shared<Light>(light);
             scene.light_.push_back(l);
+          }
+          if("pyramide" == identifier){
+            std::string pyramide_name;
+            glm::vec3 pmin, pmax, apex;
+            float side, height;
+            std::string mat;
+            std::shared_ptr<Material> m;
+
+            line_string_stream >> pmin.x;
+            line_string_stream >> pmin.y;
+            line_string_stream >> pmin.z;
+
+            line_string_stream >> pmax.x;
+            line_string_stream >> pmax.y;
+            line_string_stream >> pmax.z;
+
+            line_string_stream >> apex.x;
+            line_string_stream >> apex.y;
+            line_string_stream >> apex.z;
+
+            line_string_stream >> side;
+
+            line_string_stream >> height;
+
+            m = scene.search_vec(mat);
+
+            Pyramide pyramide{pmin, side, height, pyramide_name, m};
+            
           }
 
           if("camera" == identifier){
