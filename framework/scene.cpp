@@ -109,7 +109,7 @@ Scene read_SDF(std::string const& s) {
             line_string_stream >> c.z;
 
             line_string_stream >> mat;
-            auto m = scene.search_vec(mat);
+            m = scene.search_vec(mat);
 
             Sphere sph{c, r, m, sphere_name};
             std::shared_ptr<Shape> ptr_sphere = std::make_shared<Box>(sph);
@@ -137,7 +137,7 @@ Scene read_SDF(std::string const& s) {
             line_string_stream >> max.z;
 
             line_string_stream >> mat;
-            auto m = scene.search_vec(mat);
+            m = scene.search_vec(mat);
 
             Box box{min, max, box_name, m};
 
@@ -238,7 +238,8 @@ Scene read_SDF(std::string const& s) {
             scene.ambiente_ = std::make_shared<Ambiente>(ambiente);
           }
 
-    in_scene_file.close();
-    return scene;
+      in_scene_file.close();
+      return scene;
+    }
   }
 }
