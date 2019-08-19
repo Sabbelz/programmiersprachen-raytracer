@@ -112,7 +112,7 @@ Scene read_SDF(std::string const& s) {
             m = scene.search_vec(mat);
 
             Sphere sph{c, r, m, sphere_name};
-            std::shared_ptr<Shape> ptr_sphere = std::make_shared<Box>(sph);
+            std::shared_ptr<Shape> ptr_sphere = std::make_shared<Sphere>(sph);
             /**
              * Wie fügen wir die Objekte den root_comp hinzu? 
             */

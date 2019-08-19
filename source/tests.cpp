@@ -105,17 +105,17 @@ TEST_CASE("Sphere")
   std::cout << "\n" << s123 <<std::endl;
 }
 
-TEST_CASE("Create Materials", "[scene]")
-{
-  Scene sc = creatematerial("materials.sdf");
+// TEST_CASE("Create Materials", "[scene]")
+// {
+//   Scene sc = creatematerial("materials.sdf");
   
-  auto ptr = sc.search_map("blue");
-  std::cout << "In der Map:" <<*ptr << std::endl;
-  // auto ptr2 = sc.search_set("red");
-  // std::cout << "In dem Set:" <<*ptr2 <<std::endl;
-  auto ptr3 = sc.search_vec("green");
-  std::cout << "In dem Vec:" <<*ptr3 <<std::endl;
-}
+//   auto ptr = sc.search_map("blue");
+//   std::cout << "In der Map:" <<*ptr << std::endl;
+//   // auto ptr2 = sc.search_set("red");
+//   // std::cout << "In dem Set:" <<*ptr2 <<std::endl;
+//   auto ptr3 = sc.search_vec("green");
+//   std::cout << "In dem Vec:" <<*ptr3 <<std::endl;
+// }
 
 // TEST_CASE("Pyramide print", "[ostream, print]")
 // {
