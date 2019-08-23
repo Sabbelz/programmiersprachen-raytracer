@@ -1,19 +1,17 @@
 #include "composite.hpp"
 
-Composite::Composite():
-name_{"default"},
-shapes_{nullptr}, 
-composites_{nullptr}{};
+Composite::Composite(): Shape{nullptr,"default"}{};
 
-Composite::Composite(std::string const& name):
-name_{name},
-shapes_{nullptr},
-composites_{nullptr}{};
+Composite::Composite(std::string const& name): Shape{nullptr,name}{};
 
 Composite::Composite(std::string const& name, std::vector<std::shared_ptr<Shape>> const& shapes, std::vector<std::shared_ptr<Composite>> const& comp):
-name_{name},
+Shape{nullptr,name},
 shapes_{shapes},
 composites_{comp}{};
+
+Composite::~Composite(){};
+
+void Composite::createBoundingBox(){};
 
 void Composite::add(std::shared_ptr<Shape> shape){
     shapes_.push_back(shape);
@@ -42,9 +40,19 @@ hitpoint Composite::intersect(Ray const& r) const{
 
     for(std::shared_ptr<Shape> s: shapes_){
         temp = s->intersect(r);
-        if(temp.distance_ <= closest.distance_){
+
+        //TODO remove this dirty fix!!! 
+        temp.distance_ = abs(temp.distance_);
+
+        if(temp.hit_ == true && temp.distance_ <= closest.distance_){
             closest = temp;
         }    
     }
 return closest;
 }
+
+float Composite::area() const {return 0.5f;}
+
+float Composite::volume() const {return 0.5f;};
+
+std::ostream& Composite::print(std::ostream& os) const {return os;}

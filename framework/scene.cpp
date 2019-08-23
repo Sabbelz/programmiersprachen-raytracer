@@ -8,6 +8,7 @@
 #include "sphere.hpp"
 #include "box.hpp"
 #include "pyramide.hpp"
+#include "composite.hpp"
 
 std::shared_ptr<Material> Scene::search_vec(std::string const& s){
     for( std::shared_ptr<Material> m : vec_mat_){
@@ -33,7 +34,7 @@ Scene creatematerial(std::string const& s){
     std::string line_buffer;
     std::ifstream in_scene_file;
     Scene scene;
-
+    
     in_scene_file.open(s);
 
     while (std::getline(in_scene_file, line_buffer))
@@ -81,72 +82,82 @@ Scene read_SDF(std::string const& s) {
     std::string line_buffer;
     std::ifstream in_scene_file;
     Scene scene;
-
+    std::shared_ptr<Composite> comp = std::make_shared<Composite>();
+    scene.root_comp_ = comp;
     in_scene_file.open(s);
+    if(!in_scene_file.is_open()){
+      std::cout << "Failed to open file at: " << s << "\n";
+    }
 
     while (std::getline(in_scene_file, line_buffer))
     {
+      std::cout<<"reading new line\n";
       std::istringstream line_string_stream(line_buffer);
       std::string identifier;
       line_string_stream >> identifier;
-
+      std::cout<< "new identifier: " << identifier << "\n";
       if("define" == identifier)
       {
+          std::cout<<"define found\n";
           line_string_stream >> identifier;
-          if("sphere" == identifier){
-            std::string sphere_name;
-            line_string_stream >> sphere_name;
+          std::cout<< "new identifier: " << identifier << "\n";
+          if("shape" == identifier){
+            std::cout<<"shape found\n";
+            line_string_stream >> identifier;
+            std::cout<< "new identifier: " << identifier << "\n";
+            if("sphere" == identifier){
+              std::cout<<"sphere found\n";
+              std::string sphere_name;
+              line_string_stream >> sphere_name;
 
-            float r;
-            glm::vec3 c;
-            std::string mat;
-            std::shared_ptr<Material> m;
+              float r;
+              glm::vec3 c;
+              std::string mat;
+              std::shared_ptr<Material> m;
 
-            line_string_stream >> r;
+              
 
-            line_string_stream >> c.x;
-            line_string_stream >> c.y;
-            line_string_stream >> c.z;
+              line_string_stream >> c.x;
+              line_string_stream >> c.y;
+              line_string_stream >> c.z;
+              line_string_stream >> r;
+              line_string_stream >> mat;
+              m = scene.search_vec(mat);
 
-            line_string_stream >> mat;
-            m = scene.search_vec(mat);
+              Sphere sph{c, r, m, sphere_name};
+              std::shared_ptr<Shape> ptr_sphere = std::make_shared<Sphere>(sph);
+              std::cout<<"sphere added";
+              comp->add(ptr_sphere);
+            }
 
-            Sphere sph{c, r, m, sphere_name};
-            std::shared_ptr<Shape> ptr_sphere = std::make_shared<Sphere>(sph);
-            /**
-             * Wie fügen wir die Objekte den root_comp hinzu? 
-            */
+            if("box" == identifier){
+              std::cout<<"box found\n";
+              std::string box_name;
+              line_string_stream >> box_name;
+
+              glm::vec3 min;
+              glm::vec3 max;
+              std::string mat;
+              std::shared_ptr<Material> m;
+
+              line_string_stream >> min.x;
+              line_string_stream >> min.y;
+              line_string_stream >> min.z;
+
+              line_string_stream >> max.x;
+              line_string_stream >> max.y;
+              line_string_stream >> max.z;
+
+              line_string_stream >> mat;
+              m = scene.search_vec(mat);
+
+              Box box{min, max, box_name, m};
+
+              std::shared_ptr<Shape> ptr_box = std::make_shared<Box>(box);
+              comp->add(ptr_box);
+            }
 
           }
-
-          if("box" == identifier){
-            std::string box_name;
-            line_string_stream >> box_name;
-
-            glm::vec3 min;
-            glm::vec3 max;
-            std::string mat;
-            std::shared_ptr<Material> m;
-
-            line_string_stream >> min.x;
-            line_string_stream >> min.y;
-            line_string_stream >> min.z;
-
-            line_string_stream >> max.x;
-            line_string_stream >> max.y;
-            line_string_stream >> max.z;
-
-            line_string_stream >> mat;
-            m = scene.search_vec(mat);
-
-            Box box{min, max, box_name, m};
-
-            std::shared_ptr<Shape> ptr_box = std::make_shared<Box>(box);
-            /**
-             * Wie fügen wir die Objekte den root_comp hinzu? 
-            */
-          }
-
           if("light" == identifier){
             std::string light_name;
             line_string_stream >> light_name;
@@ -169,34 +180,36 @@ Scene read_SDF(std::string const& s) {
             auto l = std::make_shared<Light>(light);
             scene.light_.push_back(l);
           }
-                    if("pyramide" == identifier){
-            std::string pyramide_name;
-            glm::vec3 pmin, pmax, apex;
-            float side, height;
-            std::string mat;
-            std::shared_ptr<Material> m;
+          // if("pyramide" == identifier){
+          //   std::string pyramide_name;
+          //   glm::vec3 pmin, pmax, apex;
+          //   float side, height;
+          //   std::string mat;
+          //   std::shared_ptr<Material> m;
 
-            line_string_stream >> pmin.x;
-            line_string_stream >> pmin.y;
-            line_string_stream >> pmin.z;
+          //   line_string_stream >> pmin.x;
+          //   line_string_stream >> pmin.y;
+          //   line_string_stream >> pmin.z;
 
-            line_string_stream >> pmax.x;
-            line_string_stream >> pmax.y;
-            line_string_stream >> pmax.z;
+          //   line_string_stream >> pmax.x;
+          //   line_string_stream >> pmax.y;
+          //   line_string_stream >> pmax.z;
 
-            line_string_stream >> apex.x;
-            line_string_stream >> apex.y;
-            line_string_stream >> apex.z;
+          //   line_string_stream >> apex.x;
+          //   line_string_stream >> apex.y;
+          //   line_string_stream >> apex.z;
 
-            line_string_stream >> side;
+          //   line_string_stream >> side;
 
-            line_string_stream >> height;
+          //   line_string_stream >> height;
 
-            m = scene.search_vec(mat);
+          //   m = scene.search_vec(mat);
 
-            Pyramide pyramide{pmin, side, height, pyramide_name, m};
-            
-          }
+          //   Pyramide pyramide{pmin, side, height, pyramide_name, m};
+
+          //   std::shared_ptr<Shape> ptr_pyramide = std::make_shared<Pyramide>(pyramide);
+          //   comp->add(ptr_pyramide);
+          // }
 
           if("camera" == identifier){
             std::string camera_name;
@@ -222,6 +235,32 @@ Scene read_SDF(std::string const& s) {
             Camera camera(camera_name,pos,direction,up,fieldOfView);
             scene.camera_ = std::make_shared<Camera>(camera);
           }
+          if("material" == identifier)
+          {
+              std::cout<<"material found\n";
+              std::string material_name;
+              line_string_stream >> material_name;
+
+              float ka_r,ka_g,ka_b,kd_r,kd_g,kd_b,ks_r,ks_g,ks_b,flt;
+              line_string_stream >> ka_r;
+              line_string_stream >> ka_g;
+              line_string_stream >> ka_b;
+
+              line_string_stream >> kd_r;
+              line_string_stream >> kd_g;
+              line_string_stream >> kd_b;
+
+              line_string_stream >> ks_r;
+              line_string_stream >> ks_g;
+              line_string_stream >> ks_b;
+
+              line_string_stream >> flt;            
+
+              Material mat{material_name,{ka_r,ka_g,ka_b},{kd_r,kd_g,kd_b},{ks_r,ks_g,ks_b},flt};
+              auto material = std::make_shared<Material>(mat);
+              std::cout << mat << " was added" << std::endl;
+              scene.vec_mat_.push_back(material);
+          }
 
           if("ambiente" == identifier) {
             std::string ambiente_name;
@@ -237,9 +276,9 @@ Scene read_SDF(std::string const& s) {
             Ambiente ambiente{{clr_r, clr_g, clr_b}};
             scene.ambiente_ = std::make_shared<Ambiente>(ambiente);
           }
-
-      in_scene_file.close();
-      return scene;
     }
   }
+  in_scene_file.close();
+      
+  return scene;
 }

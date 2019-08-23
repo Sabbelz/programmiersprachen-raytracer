@@ -13,6 +13,7 @@ struct hitpoint{
     std::shared_ptr<Material> material_;
     glm::vec3 direction_;
     glm::vec3 hitpoint_;
+    glm::vec3 normal_;
 
 };
 

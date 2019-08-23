@@ -1,6 +1,8 @@
 #include "pyramide.hpp"
 #include <glm/gtx/intersect.hpp>
 
+glm::mat3x4 gaussianElemination3x4(glm::vec3 o, glm::vec3 d , glm::vec3 v, glm::vec3 r1, glm::vec3 r2);
+
 Pyramide::Pyramide():
 Shape{},
 pmin_{0.0f},

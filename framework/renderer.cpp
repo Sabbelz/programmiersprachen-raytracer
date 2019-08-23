@@ -21,7 +21,7 @@ Renderer::Renderer(unsigned w, unsigned h, std::string const& file, Scene const&
 
 void Renderer::render()
 {
-  double d = (width_/2)/tan((scene_.camera_->fieldOfView_/2)*M_PI/180);
+  double d = (width_/2.0f)/tan((scene_.camera_->fieldOfView_/2.0f)*M_PI/180);
 
   /* Kameratransformation (Seite 40)   */
 
@@ -40,10 +40,10 @@ void Renderer::render()
 
       /* creating the camera ray */
       glm::vec3 origin = scene_.camera_->pos_;
-      glm::vec3 direction = glm::normalize(scene_.camera_->direction_);
+      glm::vec3 direction = glm::vec3{x-(0.5*width_),y-(0.5*height_),-d}; //d
 
       /* changing the direction depending on the adressed pixel */
-      direction += glm::vec3{x-(0.5*width_),y-(0.5*height_),-d};
+
 
       Ray ray{origin, glm::normalize(direction)};
       /**
@@ -100,12 +100,12 @@ Color Renderer::tonemapping(Color const& clr){
 }
 
 Color Renderer::calculate_light(hitpoint const& hit, std::shared_ptr<Light> light){
-  Ray begin {hit.hitpoint_, glm::normalize(light->pos_-hit.hitpoint_)};
-  hitpoint h = scene_.root_comp_->intersect(begin);
+  Ray shape_to_light {hit.hitpoint_, glm::normalize(light->pos_-hit.hitpoint_)};
+  hitpoint h = scene_.root_comp_->intersect(shape_to_light);
   Color color{0.0f,0.0f,0.0f};
 
-  if(!(h.hit_)){
-    color = light->col_; //Farberechnung fehlt
+  if(!(h.hit_) || h.hit_){
+    color = hit.material_->kd; //Farberechnung fehlt
   }
   return color;
 }

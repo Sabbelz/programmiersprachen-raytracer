@@ -20,7 +20,9 @@ class Composite : public Shape{
     void add(std::shared_ptr<Composite> somposite);
     std::vector<std::shared_ptr<Shape>> get_Shape(std::vector<std::shared_ptr<Shape>>& shapes);
     hitpoint intersect(Ray const& r) const override;
-
+    float area() const override;
+    float volume() const override;
+    std::ostream& print(std::ostream& os) const override;
 
     private:
 
