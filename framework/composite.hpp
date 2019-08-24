@@ -7,7 +7,7 @@
 #include "box.hpp"
 #include "ray.hpp"
 
-class Composite : public Shape{
+class Composite : public Shape {
     public:
 
     Composite();

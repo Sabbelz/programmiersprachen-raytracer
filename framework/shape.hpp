@@ -10,7 +10,7 @@
 #include "color.hpp"
 #include "Material.hpp"
 #include <memory>
-#include "renderer.hpp"
+//#include "renderer.hpp"
 
 class Shape{
 
