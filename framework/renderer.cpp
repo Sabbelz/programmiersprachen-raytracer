@@ -126,7 +126,7 @@ void Renderer::write(Pixel const& p)
   ppm_.write(p);
 }
 
-Ray rotateRay(Ray const& ray, glm::mat4 m){
+Ray transformRay(Ray const& ray, glm::mat4 m){
   glm::vec4 origin {ray.origin, 1.0f};
   glm::vec4 direction {ray.direction, 0.0f};
 

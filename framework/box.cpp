@@ -55,7 +55,8 @@ std::ostream& Box::print(std::ostream& os) const{
 }
 
 hitpoint Box::intersect(Ray const& r)const{
-    Ray n{r};
+    //Ray n{r};
+    Ray n = transformRay(r, world_transfomation_inv_);
     hitpoint hit{};
     bool washit = false;
     float tmin = FLT_MAX;

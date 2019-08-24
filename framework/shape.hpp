@@ -10,6 +10,7 @@
 #include "color.hpp"
 #include "Material.hpp"
 #include <memory>
+#include "renderer.hpp"
 
 class Shape{
 
@@ -29,6 +30,8 @@ class Shape{
     protected:
     std::shared_ptr<Material> material_;
     std::string name_;
+    glm::mat4 world_transformation_;
+    glm::mat4 world_transfomation_inv_;
 };
 
 std::ostream& operator<<(std::ostream& os, Shape const& s);
