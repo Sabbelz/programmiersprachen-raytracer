@@ -27,7 +27,7 @@ public:
   Color calculate_light(hitpoint const& hit, std::shared_ptr<Light> light);
   Color calculate_color(hitpoint const& hit, int counter);
   Color calculate_ambiente(hitpoint const& hit);
-  Color calculate_diffuse(hitpoint const& hit, std::shared_ptr<Light> light);
+  Color calculate_diffuse(hitpoint const& hit);
   Color tonemapping(Color const& clr);
 
   inline std::vector<Color> const& color_buffer() const

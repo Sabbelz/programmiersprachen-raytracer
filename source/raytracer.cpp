@@ -13,11 +13,11 @@ int main(int argc, char* argv[])
   std::string const filename = "./checkerboard.ppm";
 
   std::cout<<"reading sdf  \n";
-  Scene scene = read_SDF("/home/sebastian/materials.sdf");
-  //Scene scene = read_SDF("/home/luigi/Desktop/materials.sdf");
+  // Scene scene = read_SDF("/home/sebastian/materials.sdf");
+  Scene scene = read_SDF("/home/luigi/Desktop/materials.sdf");
   std::cout<<"reading sdf finished \n";
   Light light1("Licht", {0.0f,0.0f,0.0f}, {0.66f,0.66f,0.66f}, 1.0f);
-  Ambiente amb{{0.0f,1.0f,1.0f}};
+  Ambiente amb{{0.411764f,0.411764f,0.411764f}};
   Camera cam("Kamera", {0.0f,0.0f,0.0f},{0.0f,0.0f,-1.0f},{0.0f,1.0f,0.0f},110);
   // Box b1({10.0f,10.0f,100.0f},{15.0f,15.0f,105.0f});
 

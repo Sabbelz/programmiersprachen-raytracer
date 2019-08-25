@@ -85,11 +85,11 @@ void Renderer::render()
 Color Renderer::calculate_color(hitpoint const& hit, int counter){
   Color color {0.0f,0.0f,0.0f};
   Color ambiente = calculate_ambiente(hit);
+  Color diffuse = calculate_diffuse(hit);
 
-  for(auto l : scene_.light_){
-    color += calculate_light(hit, l);
-  }
-  return color+ambiente;
+  color += diffuse + ambiente;
+
+  return color;
 }
 
 Color Renderer::tonemapping(Color const& clr){
@@ -100,17 +100,17 @@ Color Renderer::tonemapping(Color const& clr){
   return color;
 }
 
-Color Renderer::calculate_light(hitpoint const& hit, std::shared_ptr<Light> light){
-  Ray shape_to_light {hit.hitpoint_, glm::normalize(light->pos_-hit.hitpoint_)};
-  hitpoint h = scene_.root_comp_->intersect(shape_to_light);
-  Color color{0.0f,0.0f,0.0f};
+// Color Renderer::calculate_light(hitpoint const& hit, std::shared_ptr<Light> light){
+//   Ray shape_to_light {hit.hitpoint_, glm::normalize(light->pos_-hit.hitpoint_)};
+//   hitpoint h = scene_.root_comp_->intersect(shape_to_light);
+//   Color color{0.0f,0.0f,0.0f};
 
-  if(!(h.hit_) || h.hit_){
+//   if(!(h.hit_) || h.hit_){
     
-    color = hit.material_->ks; //Farberechnung fehlt
-  }
-  return color;
-}
+//     color = hit.material_->ks; //Farberechnung fehlt
+//   }
+//   return color;
+// }
 
 void Renderer::write(Pixel const& p)
 {
@@ -146,9 +146,42 @@ Color Renderer::calculate_ambiente(hitpoint const& hit) {
   return ambiente*ka;
 }
 
-Color Renderer::calculate_diffuse(hitpoint const& hit, std::shared_ptr<Light> light) {
-  Color Ip = light->col_*light->brightness_;
-  glm::vec3 to_light = glm::normalize(light->pos_-hit.hitpoint_);
-  float aux = glm::dot(to_light,glm::normalize(hit.normal_));
-  return Ip*hit.material_->kd*aux;
+// Color Renderer::calculate_diffuse(hitpoint const& hit, std::shared_ptr<Light> light) {
+//   Color Ip = light->col_*light->brightness_;
+//   glm::vec3 to_light = glm::normalize(light->pos_-hit.hitpoint_);
+//   float aux = glm::dot(to_light,glm::normalize(hit.normal_));
+//   return Ip*hit.material_->kd*aux;
+// }
+
+Color Renderer::calculate_diffuse(hitpoint const& hit) {
+  Color combined_clr{0.0f,0.0f,0.0f};
+  std::vector<Color> light_colors;
+
+  for(auto light : scene_.light_) {
+    bool obstacle = false;
+
+    hitpoint hp;
+    glm::vec3 vec_to_light;
+    vec_to_light = glm::normalize(light->pos_ - hit.hitpoint_);
+    Ray ray_to_light{hit.hitpoint_+0.1f*hit.normal_,vec_to_light};
+
+    hp = scene_.root_comp_->intersect(ray_to_light);
+
+    if(hp.hit_){
+      obstacle = true;
+    }
+
+    if(!obstacle) {
+      float aux = glm::dot(vec_to_light,glm::normalize(hit.normal_));
+      Color ip = light->col_ * light->brightness_;
+      Color kd = hit.material_->kd;
+      light_colors.push_back(kd*aux*ip);
+    }
+  } 
+ 
+  for(auto color : light_colors){
+    combined_clr += color;
+  }
+
+  return combined_clr;
 }
