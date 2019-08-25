@@ -28,6 +28,7 @@ public:
   Color calculate_color(hitpoint const& hit, int counter);
   Color calculate_ambiente(hitpoint const& hit);
   Color calculate_diffuse(hitpoint const& hit);
+  Color calculate_specular(hitpoint const& hit);
   Color tonemapping(Color const& clr);
 
   inline std::vector<Color> const& color_buffer() const

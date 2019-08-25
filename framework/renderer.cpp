@@ -56,8 +56,8 @@ void Renderer::render()
       hitpoint hit = scene_.root_comp_->intersect(ray);
 
       if(hit.hit_) {
-        Color current = calculate_color(hit, 2);
-        p.color = current;
+        Color current = calculate_color(hit, 3);
+        p.color += current;
       } else {
         p.color = scene_.ambiente_->col_;
       }
@@ -86,8 +86,9 @@ Color Renderer::calculate_color(hitpoint const& hit, int counter){
   Color color {0.0f,0.0f,0.0f};
   Color ambiente = calculate_ambiente(hit);
   Color diffuse = calculate_diffuse(hit);
+  Color specular = calculate_specular(hit);
 
-  color += diffuse + ambiente;
+  color += diffuse + ambiente + specular;
 
   return color;
 }
@@ -155,14 +156,13 @@ Color Renderer::calculate_ambiente(hitpoint const& hit) {
 
 Color Renderer::calculate_diffuse(hitpoint const& hit) {
   Color combined_clr{0.0f,0.0f,0.0f};
-  std::vector<Color> light_colors;
+  std::vector<Color> calculated_colors;
 
   for(auto light : scene_.light_) {
     bool obstacle = false;
 
     hitpoint hp;
-    glm::vec3 vec_to_light;
-    vec_to_light = glm::normalize(light->pos_ - hit.hitpoint_);
+    glm::vec3 vec_to_light = glm::normalize(light->pos_ - hit.hitpoint_);
     Ray ray_to_light{hit.hitpoint_+0.1f*hit.normal_,vec_to_light};
 
     hp = scene_.root_comp_->intersect(ray_to_light);
@@ -175,13 +175,57 @@ Color Renderer::calculate_diffuse(hitpoint const& hit) {
       float aux = glm::dot(vec_to_light,glm::normalize(hit.normal_));
       Color ip = light->col_ * light->brightness_;
       Color kd = hit.material_->kd;
-      light_colors.push_back(kd*aux*ip);
+      calculated_colors.push_back(kd*aux*ip);
     }
   } 
  
-  for(auto color : light_colors){
+  for(auto color : calculated_colors){
     combined_clr += color;
   }
 
   return combined_clr;
+}
+
+Color Renderer::calculate_specular(hitpoint const& hit) {
+  Color combined_color{0.0f,0.0f,0.0f};
+  std::vector<Color> calculated_colors;
+
+  for(auto light : scene_.light_) {
+    bool obstacle = false;
+
+    hitpoint hp;
+    glm::vec3 vec_to_light = glm::normalize(light->pos_ - hit.hitpoint_);
+    Ray ray_to_light{hit.hitpoint_+0.1f*hit.normal_,vec_to_light};
+
+    hp = scene_.root_comp_->intersect(ray_to_light);
+
+    if(hp.hit_){
+      obstacle = true;
+    }
+
+    if(!obstacle) {
+      float m = hit.material_->m;
+      glm::vec3 r = 2.0f*glm::dot(hit.normal_,vec_to_light)*hit.normal_-vec_to_light;
+      glm::vec3 v = glm::normalize(scene_.camera_->pos_ - hit.hitpoint_);
+
+      float aux = glm::dot(r,v);
+
+      if(aux < 0) {
+        aux = -aux;
+      }
+
+      float cos = pow(aux,m);
+      float m_2 = (m+2)/(2*M_PI);
+      Color ip = light->col_*light->brightness_;
+      Color ks = hit.material_->ks;
+      
+      calculated_colors.push_back(ip*ks*cos*m_2);
+    }
+  }
+
+    for(auto color : calculated_colors){
+      combined_color += color;
+    }
+
+  return combined_color;
 }
