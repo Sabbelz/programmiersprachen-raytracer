@@ -29,9 +29,12 @@ class Shape{
 
     virtual std::ostream& print(std::ostream& os) const;
 
+    void transformation(glm::mat4 const& matrix);
+
+    std::string name_;
+
     protected:
     std::shared_ptr<Material> material_;
-    std::string name_;
     glm::mat4 world_transformation_;
     glm::mat4 world_transformation_inv_;
 };

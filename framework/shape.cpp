@@ -20,3 +20,8 @@ std::ostream& Shape::print(std::ostream& os) const{
 std::ostream& operator<<(std::ostream& os, Shape const& s){
     return s.print(os);
 }
+
+void Shape::transformation(glm::mat4 const& matrix){
+    world_transformation_ *= matrix;
+    world_transformation_inv_ = glm::inverse(world_transformation_);
+}

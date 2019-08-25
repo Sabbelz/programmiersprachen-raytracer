@@ -28,7 +28,10 @@ Scene read_SDF(std::string const& s) {
     std::string line_buffer;
     std::ifstream in_scene_file;
     Scene scene;
+
     std::shared_ptr<Composite> comp = std::make_shared<Composite>();
+    std::map<std::string, std::shared_ptr<Shape>> shape_map;
+
     scene.root_comp_ = comp;
     in_scene_file.open(s);
     if(!in_scene_file.is_open()){
@@ -74,6 +77,7 @@ Scene read_SDF(std::string const& s) {
               std::shared_ptr<Shape> ptr_sphere = std::make_shared<Sphere>(sph);
               std::cout<<"sphere added";
               comp->add(ptr_sphere);
+              shape_map.insert(std::pair<std::string, std::shared_ptr<Shape>>(sphere_name, ptr_sphere));
             }
 
             if("box" == identifier){
@@ -101,6 +105,7 @@ Scene read_SDF(std::string const& s) {
 
               std::shared_ptr<Shape> ptr_box = std::make_shared<Box>(box);
               comp->add(ptr_box);
+              shape_map.insert(std::pair<std::string, std::shared_ptr<Shape>>(box_name, ptr_box));
             }
 
           }
@@ -222,8 +227,44 @@ Scene read_SDF(std::string const& s) {
             Ambiente ambiente{{clr_r, clr_g, clr_b}};
             scene.ambiente_ = std::make_shared<Ambiente>(ambiente);
           }
+        }
+
+      if("transform" == identifier){
+        line_string_stream >> identifier;
+
+        if(shape_map.find(identifier) != shape_map.end()){
+          auto shape = shape_map.at(identifier);
+          std::cout << "trying to transform: " << shape->name_ << "\n";
+
+          line_string_stream >> identifier;
+          
+          if("scale" == identifier){
+
+          }
+          if("translate" == identifier){
+            std::cout<<"translation started\n";
+            float x,y,z;
+
+            line_string_stream >> x;
+            line_string_stream >> y;
+            line_string_stream >> z;
+
+            glm::mat4 transformation_mat = glm::mat4{
+              glm::vec4{1.0f, 0.0f, 0.0f, 0.0f}, 
+              glm::vec4{0.0f, 1.0f, 0.0f, 0.0f},
+              glm::vec4{0.0f, 0.0f, 1.0f, 0.0f}, 
+              glm::vec4{x, y, z, 1.0f}};
+
+              shape->transformation(transformation_mat);
+              std::cout<<"translation complete\n";
+          }
+          if("rotate" == identifier){
+
+          }
+        }
+      }
     }
-  }
+
   in_scene_file.close();
       
   return scene;
