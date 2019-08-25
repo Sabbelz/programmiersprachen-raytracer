@@ -1,4 +1,3 @@
-
 #include "scene.hpp"
 
 
@@ -237,10 +236,25 @@ Scene read_SDF(std::string const& s) {
           std::cout << "trying to transform: " << shape->name_ << "\n";
 
           line_string_stream >> identifier;
-          
-          if("scale" == identifier){
 
+          if("scale" == identifier){
+            std::cout<<"scaling started\n";
+            float x,y,z;
+
+            line_string_stream >> x;
+            line_string_stream >> y;
+            line_string_stream >> z;
+
+    
+						glm::vec3 scale{x, y, z};
+
+            glm::mat4 matrix = glm::mat4{};
+						shape->transformation(matrix);
+
+            std::cout<<"scaling complete\n";
+		 
           }
+
           if("translate" == identifier){
             std::cout<<"translation started\n";
             float x,y,z;
@@ -255,11 +269,38 @@ Scene read_SDF(std::string const& s) {
               glm::vec4{0.0f, 0.0f, 1.0f, 0.0f}, 
               glm::vec4{x, y, z, 1.0f}};
 
-              shape->transformation(transformation_mat);
-              std::cout<<"translation complete\n";
+            shape->transformation(transformation_mat);
+            std::cout<<"translation complete\n";
           }
-          if("rotate" == identifier){
 
+          if("rotate" == identifier){
+            std::cout<<"rotating started\n";
+            float  angle,x,y,z;
+
+            line_string_stream >> angle;
+            line_string_stream >> x;
+            line_string_stream >> y;
+            line_string_stream >> z;
+
+            angle = (angle * 2 * M_PI) / 360;
+            glm::vec3 temp{0.0f,0.0f,0.0f};
+
+            if(x == 1){
+              temp.x = x;
+
+            } else if(y == 1){
+              temp.y = y;
+
+            }else{
+              temp.z = z;
+            }
+
+            glm::mat4 matrix = glm::mat4{
+              
+            };
+
+            shape->transformation(matrix);
+            std::cout<<"rorating complete\n";
           }
         }
       }

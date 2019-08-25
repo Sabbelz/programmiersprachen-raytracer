@@ -8,6 +8,7 @@
 #include <ostream>
 #include <sstream>
 #include <string>
+#include <algorithm>
 
 #include "Material.hpp"
 #include "shape.hpp"
