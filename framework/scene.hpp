@@ -5,6 +5,10 @@
 #include <map>
 #include <iostream>
 #include <fstream>
+#include <ostream>
+#include <sstream>
+#include <string>
+
 #include "Material.hpp"
 #include "shape.hpp"
 #include "hitpoint.hpp"
@@ -12,6 +16,10 @@
 #include "camera.hpp"
 #include "light.hpp"
 #include "composite.hpp"
+#include "sphere.hpp"
+#include "box.hpp"
+#include "pyramide.hpp"
+
 
 struct Scene{
 

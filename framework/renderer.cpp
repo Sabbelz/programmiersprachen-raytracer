@@ -37,7 +37,6 @@ void Renderer::render()
     for(int y = 0; y < height_; ++y) {
       
       Pixel p(x,y);
-
       /* creating the camera ray */
       glm::vec3 origin = scene_.camera_->pos_;
       glm::vec3 direction = glm::vec3{x-(0.5*width_),y-(0.5*height_),-d}; //d
@@ -134,7 +133,7 @@ Ray transformRay(Ray const& ray, glm::mat4 m){
   glm::vec4 direction {ray.direction, 0.0f};
 
   origin = m * origin;
-  direction = m * direction;
+  direction = glm::normalize(m * direction);
 
   Ray value{{origin.x, origin.y, origin.z},{direction.x, direction.y, direction.z}};
   return value;

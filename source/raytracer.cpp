@@ -18,7 +18,7 @@ int main(int argc, char* argv[])
   std::cout<<"reading sdf finished \n";
   Light light1("Licht", {0.0f,0.0f,0.0f}, {0.66f,0.66f,0.66f}, 1.0f);
   Ambiente amb{{0.0f,1.0f,1.0f}};
-  Camera cam("Kamera", {0.0f,0.0f,0.0f},{0.0f,0.0f,-1.0f},{0.0f,1.0f,0.0f},60);
+  Camera cam("Kamera", {0.0f,0.0f,0.0f},{0.0f,0.0f,-1.0f},{0.0f,1.0f,0.0f},110);
   // Box b1({10.0f,10.0f,100.0f},{15.0f,15.0f,105.0f});
 
    auto ptr_shared = std::make_shared<Camera>(cam);

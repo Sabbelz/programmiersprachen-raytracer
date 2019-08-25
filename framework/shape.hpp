@@ -11,7 +11,8 @@
 #include "Material.hpp"
 #include <memory>
 #include <vector>
-//#include "renderer.hpp"
+#include "plane.hpp"
+
 
 class Shape{
 
@@ -32,7 +33,7 @@ class Shape{
     std::shared_ptr<Material> material_;
     std::string name_;
     glm::mat4 world_transformation_;
-    glm::mat4 world_transfomation_inv_;
+    glm::mat4 world_transformation_inv_;
 };
 
 std::ostream& operator<<(std::ostream& os, Shape const& s);

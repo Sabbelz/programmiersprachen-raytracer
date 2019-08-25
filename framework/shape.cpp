@@ -2,11 +2,15 @@
 
 Shape::Shape():
 material_{},
-name_{"default"}{/* std::cout << "Shape constructor used." << std::endl;*/}
+name_{"default"}{
+    world_transformation_= glm::mat4x4{glm::vec4{1.0f,0.0f,0.0f,0.0f},glm::vec4{0.0f,1.0f,0.0f,0.0f},glm::vec4{0.0f,0.0f,1.0f,0.0f},glm::vec4{0.0f,0.0f,0.0f,1.0f}};
+    world_transformation_inv_ = glm::inverse(world_transformation_);}
 
 Shape::Shape(std::shared_ptr<Material> material, std::string const& name):
 material_{material},
-name_{name}{/*std::cout << "Shape constructor used." << std::endl;*/}
+name_{name}{
+    world_transformation_= glm::mat4x4{glm::vec4{1.0f,0.0f,0.0f,0.0f},glm::vec4{0.0f,1.0f,0.0f,0.0f},glm::vec4{0.0f,0.0f,1.0f,0.0f},glm::vec4{0.0f,0.0f,0.0f,1.0f}};
+    world_transformation_inv_ = glm::inverse(world_transformation_);}
 
 std::ostream& Shape::print(std::ostream& os) const{
     return os << "Material: " << *material_

@@ -41,9 +41,6 @@ hitpoint Composite::intersect(Ray const& r) const{
     for(std::shared_ptr<Shape> s: shapes_){
         temp = s->intersect(r);
 
-        //TODO remove this dirty fix!!! 
-        temp.distance_ = abs(temp.distance_);
-
         if(temp.hit_ == true && temp.distance_ <= closest.distance_){
             closest = temp;
         }    

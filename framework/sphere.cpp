@@ -1,4 +1,5 @@
 #include "sphere.hpp"
+#include "renderer.hpp"
 #include <cmath>
 
 Sphere::Sphere():
@@ -31,22 +32,22 @@ std::ostream& Sphere::print(std::ostream& os) const{
 }
 
 hitpoint Sphere::intersect(Ray const& r) const{
-    Ray n{r};
-    //Ray n = transformRay(world_transfomation_inv_,r);
+    Ray n = transformRay(r, world_transformation_inv_);
     hitpoint hit{};
     float distance;
     bool washit = glm::intersectRaySphere(n.origin, glm::normalize(n.direction), center_, pow(radius_,2), distance);
     if (washit == true){
+        hit.hitpoint_= n.origin + distance*n.direction; 
+        hit.normal_ = glm::normalize(hit.hitpoint_ - center_);
         glm::vec4 transformed_point = world_transformation_ * glm::vec4{hit.hitpoint_, 1};
-        glm::vec4 transformed_normal = glm::normalize(glm::transpose(world_transfomation_inv_)* glm::vec4{hit.normal_,0});
+        glm::vec4 transformed_normal = glm::normalize(glm::transpose(world_transformation_inv_)* glm::vec4{hit.normal_,0});
         hit.hitpoint_ = glm::vec3{transformed_point.x, transformed_point.y, transformed_point.z};
         hit.normal_ = glm::vec3{transformed_normal.x, transformed_normal.y, transformed_normal.z};
         hit.hit_= true;
         hit.material_ = material_;
-        hit.direction_ = n.direction;
+        hit.direction_ = r.direction;
         hit.distance_ = glm::length(hit.hitpoint_ - r.origin);
         hit.name_ = name_;
-        std::make_shared<Sphere>(center_, radius_, material_, name_);
     }
     return hit;
 }
