@@ -186,7 +186,7 @@ hitpoint Box::intersect(Ray const& r)const{
         hit.normal_ = glm::vec3{transformed_normal.x, transformed_normal.y, transformed_normal.z};
         hit.distance_ = glm::length(hit.hitpoint_ - r.origin);
 
-        //std::make_shared<Box>(min_, max_, name(), material());
+        std::make_shared<Box>(min_, max_, name_, material_);
     }
 
     return hit;
