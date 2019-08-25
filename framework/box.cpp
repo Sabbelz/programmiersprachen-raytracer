@@ -63,7 +63,10 @@ hitpoint Box::intersect(Ray const& r)const{
     float tmin = FLT_MAX;
 
     float t = (min_.x-n.origin.x)/(glm::normalize(n.direction)).x;
-    glm::vec3 p_x = n.origin + t*(glm::normalize(n.direction)); 
+    glm::vec3 p_x = n.origin + t*(glm::normalize(n.direction));
+
+    std::vector<glm::vec3> container_hitpoints;
+    std::vector<glm::vec3> container_normal;
     
     if(p_x.y <= max_.y && p_x.y >= min_.y
     && p_x.z <= max_.z && p_x.z >= min_.z){
@@ -84,6 +87,7 @@ hitpoint Box::intersect(Ray const& r)const{
         {
             hit.hitpoint_ = p_x2;
             tmin = t_max_x;
+            container_hitpoints.push_back(hit.hitpoint_);
         }
     }
 
@@ -99,6 +103,7 @@ hitpoint Box::intersect(Ray const& r)const{
         {
             hit.hitpoint_ = p_y;
             tmin = t_min_y;
+            container_hitpoints.push_back(hit.hitpoint_);
         }
     }
 
@@ -114,6 +119,7 @@ hitpoint Box::intersect(Ray const& r)const{
         {
             hit.hitpoint_ = p_y2;
             tmin = t_max_y;
+            container_hitpoints.push_back(hit.hitpoint_);
         }
     }
     
@@ -130,6 +136,7 @@ hitpoint Box::intersect(Ray const& r)const{
         {
             hit.hitpoint_ = p_z;
             tmin = t_min_z;
+            container_hitpoints.push_back(hit.hitpoint_);
         }
     }
 
@@ -146,6 +153,7 @@ hitpoint Box::intersect(Ray const& r)const{
         {
             hit.hitpoint_ = p_z2;
             tmin = t_max_z;
+            container_hitpoints.push_back(hit.hitpoint_);
         }
     }
     
@@ -159,5 +167,27 @@ hitpoint Box::intersect(Ray const& r)const{
        hit.name_ = name_;
        
     }
+
+    if(!(container_hitpoints.empty())){
+        glm::vec3 closest_point = container_hitpoints.at(0);
+        glm::vec3 closest_normal = container_normal.at(0);
+
+        for(auto it = 0; it < container_hitpoints.size(); ++it){
+            if(glm::length(container_hitpoints.at(it) - n.origin) < glm::length(closest_point - n.origin)){
+                closest_point = container_hitpoints.at(it);
+                closest_normal = container_normal.at(it);
+            }
+        }
+
+        glm::vec4 transformed_point = world_transformation_ * glm::vec4{closest_point, 1};
+        glm::vec4 transformed_normal = glm::normalize((glm::transpose(world_transfomation_inv_)* glm::vec4{closest_normal, 0}));
+
+        hit.hitpoint_ = glm::vec3{transformed_point.x, transformed_point.y, transformed_point.z};
+        hit.normal_ = glm::vec3{transformed_normal.x, transformed_normal.y, transformed_normal.z};
+        hit.distance_ = glm::length(hit.hitpoint_ - r.origin);
+
+        //std::make_shared<Box>(min_, max_, name(), material());
+    }
+
     return hit;
 }
