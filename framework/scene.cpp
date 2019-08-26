@@ -245,10 +245,15 @@ Scene read_SDF(std::string const& s) {
             line_string_stream >> y;
             line_string_stream >> z;
 
-    
-						glm::vec3 scale{x, y, z};
 
-            glm::mat4 matrix = glm::mat4{};
+            glm::mat4 matrix = glm::mat4{
+              glm::vec4{x, 0.0f, 0.0f, 0.0f}, 
+              glm::vec4{0.0f, y, 0.0f, 0.0f},
+              glm::vec4{0.0f, 0.0f, z, 0.0f}, 
+              glm::vec4{0.0f, 0.0f, 0.0f, 1.0f}};
+
+            glm::inverse(glm::transpose(matrix)); 
+            
 						shape->transformation(matrix);
 
             std::cout<<"scaling complete\n";
@@ -282,24 +287,40 @@ Scene read_SDF(std::string const& s) {
             line_string_stream >> y;
             line_string_stream >> z;
 
-            angle = (angle * 2 * M_PI) / 360;
-            glm::vec3 temp{0.0f,0.0f,0.0f};
+            //angle = (angle * 2 * M_PI) / 360;
+            //glm::vec3 temp{0.0f,0.0f,0.0f};
 
             if(x == 1){
-              temp.x = x;
-
-            } else if(y == 1){
-              temp.y = y;
-
-            }else{
-              temp.z = z;
-            }
-
-            glm::mat4 matrix = glm::mat4{
-              
+               glm::mat4 matrix = glm::mat4{
+                glm::vec4{1.0f, 0.0f, 0.0f, 0.0f},
+                glm::vec4{0.0f, cos(angle), -sin(angle), 0.0f},
+                glm::vec4{0.0f,sin(angle),cos(angle),0.0f},
+                glm::vec4{0.0f,0.0f,0.0f,1.0f}      
             };
 
             shape->transformation(matrix);
+
+            } else if(y == 1){
+              glm::mat4 matrix = glm::mat4{
+                glm::vec4{cos(angle), 0.0f, sin(angle), 0.0f},
+                glm::vec4{0.0f, 1.0f, 0.0f, 0.0f},
+                glm::vec4{-sin(angle),0.0f,cos(angle),0.0f},
+                glm::vec4{0.0f,0.0f,0.0f,1.0f}      
+            };
+
+            shape->transformation(matrix);
+
+            }else{
+              glm::mat4 matrix = glm::mat4{
+                glm::vec4{cos(angle), -sin(angle), 0.0f, 0.0f},
+                glm::vec4{sin(angle), cos(angle), 0.0f, 0.0f},
+                glm::vec4{0.0f,0.0f,1.0f,0.0f},
+                glm::vec4{0.0f,0.0f,0.0f,1.0f}      
+            };
+
+            shape->transformation(matrix);
+            }
+
             std::cout<<"rorating complete\n";
           }
         }
