@@ -290,6 +290,10 @@ Scene read_SDF(std::string const& s) {
             //angle = (angle * 2 * M_PI) / 360;
             //glm::vec3 temp{0.0f,0.0f,0.0f};
 
+            /**
+             * x-Rotation
+             */
+
             if(x == 1){
                glm::mat4 matrix = glm::mat4{
                 glm::vec4{1.0f, 0.0f, 0.0f, 0.0f},
@@ -299,6 +303,10 @@ Scene read_SDF(std::string const& s) {
             };
 
             shape->transformation(matrix);
+            
+            /**
+             * y-Rotation
+             */
 
             } else if(y == 1){
               glm::mat4 matrix = glm::mat4{
@@ -309,6 +317,10 @@ Scene read_SDF(std::string const& s) {
             };
 
             shape->transformation(matrix);
+
+            /**
+             * z-Rotation
+             */
 
             }else{
               glm::mat4 matrix = glm::mat4{
