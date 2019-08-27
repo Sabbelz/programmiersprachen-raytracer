@@ -88,16 +88,16 @@ Color Renderer::calculate_color(hitpoint const& hit, int counter){
   Color diffuse = calculate_diffuse(hit);
   Color specular = calculate_specular(hit);
 
-  color += diffuse + ambiente + specular;
+  color = ambiente + diffuse + specular;
 
   return color;
 }
 
 Color Renderer::tonemapping(Color const& clr){
   Color color{0.0f,0.0f,0.0f};
-  color.r = clr.r/clr.r+1;
-  color.b = clr.b/clr.b+1;
-  color.g = clr.g/clr.g+1;
+  color.r = clr.r/(clr.r+1.0f);
+  color.b = clr.b/(clr.b+1.0f);
+  color.g = clr.g/(clr.g+1.0f);
   return color;
 }
 
