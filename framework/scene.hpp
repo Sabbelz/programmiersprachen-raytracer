@@ -20,6 +20,8 @@
 #include "sphere.hpp"
 #include "box.hpp"
 #include "pyramide.hpp"
+#include "Cone.hpp"
+#include "Cylinder.hpp"
 
 
 struct Scene{
