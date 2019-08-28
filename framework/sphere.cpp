@@ -17,8 +17,6 @@ Shape{material, name},
 center_{center},
 radius_{abs(radius)}{/*std::cout << "Sphere constructor used."<<std::endl; */}
 
-Sphere::~Sphere(){}
-
 
 float Sphere::area() const{
     return (4* M_PI * radius_ * radius_);

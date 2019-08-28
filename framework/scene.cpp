@@ -129,61 +129,61 @@ Scene read_SDF(std::string const& s) {
               comp->add(ptr_box);
               shape_map.insert(std::pair<std::string, std::shared_ptr<Shape>>(box_name, ptr_box));
             }
-            if("cone" == identifier){
-              std::cout<<"cone found\n";
-              std::string cone_name;
-              line_string_stream >> cone_name;
+            // if("cone" == identifier){
+            //   std::cout<<"cone found\n";
+            //   std::string cone_name;
+            //   line_string_stream >> cone_name;
 
-              glm::vec3 center;
-              float radius, heigth;
-              std::string mat;
-              std::shared_ptr<Material> m;
+            //   glm::vec3 center;
+            //   float radius, heigth;
+            //   std::string mat;
+            //   std::shared_ptr<Material> m;
 
-              line_string_stream >> center.x;
-              line_string_stream >> center.y;
-              line_string_stream >> center.z;
+            //   line_string_stream >> center.x;
+            //   line_string_stream >> center.y;
+            //   line_string_stream >> center.z;
 
-              line_string_stream >> heigth;
+            //   line_string_stream >> heigth;
 
-              line_string_stream >> radius;
+            //   line_string_stream >> radius;
 
-              line_string_stream >> mat;
-              m = scene.search_vec(mat);
+            //   line_string_stream >> mat;
+            //   m = scene.search_vec(mat);
 
-              Cone cone{center, heigth, radius, cone_name, m};
+            //   Cone cone{center, heigth, radius, cone_name, m};
 
-              std::shared_ptr<Shape> ptr_cone = std::make_shared<Cone>(cone);
-              comp->add(ptr_cone);
-              shape_map.insert(std::pair<std::string, std::shared_ptr<Shape>>(cone_name, ptr_cone));
-            }
-            if("cylinder" == identifier){
-              std::cout<<"cylinder found\n";
-              std::string cylinder_name;
-              line_string_stream >> cylinder_name;
+            //   std::shared_ptr<Shape> ptr_cone = std::make_shared<Cone>(cone);
+            //   comp->add(ptr_cone);
+            //   shape_map.insert(std::pair<std::string, std::shared_ptr<Shape>>(cone_name, ptr_cone));
+            // }
+            // if("cylinder" == identifier){
+            //   std::cout<<"cylinder found\n";
+            //   std::string cylinder_name;
+            //   line_string_stream >> cylinder_name;
 
-              glm::vec3 center;
-              float heigth, radius;
+            //   glm::vec3 center;
+            //   float heigth, radius;
 
-              std::string mat;
-              std::shared_ptr<Material> m;
+            //   std::string mat;
+            //   std::shared_ptr<Material> m;
 
-              line_string_stream >> center.x;
-              line_string_stream >> center.y;
-              line_string_stream >> center.z;
+            //   line_string_stream >> center.x;
+            //   line_string_stream >> center.y;
+            //   line_string_stream >> center.z;
 
-              line_string_stream >> heigth;
+            //   line_string_stream >> heigth;
 
-              line_string_stream >> radius;
+            //   line_string_stream >> radius;
 
-              line_string_stream >> mat;
-              m = scene.search_vec(mat);
+            //   line_string_stream >> mat;
+            //   m = scene.search_vec(mat);
 
-              Cylinder cylinder{center, heigth, radius, cylinder_name, m};
+            //   Cylinder cylinder{center, heigth, radius, cylinder_name, m};
 
-              std::shared_ptr<Shape> ptr_cylinder = std::make_shared<Cylinder>(cylinder);
-              comp->add(ptr_cylinder);
-              shape_map.insert(std::pair<std::string, std::shared_ptr<Shape>>(cylinder_name, ptr_cylinder));
-            }            
+            //   std::shared_ptr<Shape> ptr_cylinder = std::make_shared<Cylinder>(cylinder);
+            //   comp->add(ptr_cylinder);
+            //   shape_map.insert(std::pair<std::string, std::shared_ptr<Shape>>(cylinder_name, ptr_cylinder));
+            // }            
           }
 
           // if("pyramide" == identifier){
