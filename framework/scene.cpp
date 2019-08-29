@@ -344,9 +344,6 @@ Scene read_SDF(std::string const& s) {
             line_string_stream >> y;
             line_string_stream >> z;
 
-            //angle = (angle * 2 * M_PI) / 360;
-            //glm::vec3 temp{0.0f,0.0f,0.0f};
-
             /**
              * x-Rotation
              */
