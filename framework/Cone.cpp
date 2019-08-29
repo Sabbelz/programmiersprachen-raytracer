@@ -23,8 +23,6 @@ Cone::Cone(glm::vec3 const& center, float height, float radius, std::string cons
     radius_{radius}
 {}
 
-Cone::~Cone(){}
-
 float Cone::area() const{
     float s = sqrt(height_*height_ + radius_*radius_);
     float area_o = (radius_*radius_ * M_PI) + (radius_ * s * M_PI);

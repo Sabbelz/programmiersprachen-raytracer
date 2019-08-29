@@ -22,8 +22,6 @@ Cylinder::Cylinder(glm::vec3 const& center, float height, float radius, std::str
     radius_{radius}
 {}
 
-Cylinder::~Cylinder(){}
-
 float Cylinder::area() const{
     float area_o = (2*M_PI*radius_*height_) + (2*M_PI*radius_*radius_ + 2*M_PI*radius_*height_);
 
