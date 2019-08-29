@@ -1,6 +1,6 @@
 #include "triangle.hpp"
 
-Triangle::Triangle(glm::vec3 a, glm::vec3 b, glm::vec3 c, std::shared_ptr<Material> material , std::string name) :
+Triangle::Triangle(glm::vec3 a, glm::vec3 b, glm::vec3 c, std::string name ,std::shared_ptr<Material> material) :
     Shape{material,name},
     a_{a},
     b_{b},

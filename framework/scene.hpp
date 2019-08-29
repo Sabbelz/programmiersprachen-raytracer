@@ -22,6 +22,7 @@
 #include "pyramide.hpp"
 #include "Cone.hpp"
 #include "Cylinder.hpp"
+#include "triangle.hpp"
 
 
 struct Scene{
