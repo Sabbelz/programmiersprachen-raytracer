@@ -56,7 +56,7 @@ hitpoint Triangle::intersect(Ray const& r) const{
     glm::vec3 w = glm::cross(s,ab);
     float v = f * glm::dot(ray.direction, w);
 
-    if( v < 0.0f || v > 1.0f) {
+    if( v < 0.0f ||u + v > 1.0f) {
         h.hit_ = false;
         return h;
     }
@@ -76,7 +76,9 @@ hitpoint Triangle::intersect(Ray const& r) const{
         h.direction_ = r.direction;
         h.distance_ = glm::length(h.hitpoint_-r.origin);
         h.name_ = name_;
-    }
-
+        return h;
+    }else{
+    h.hit_ = false;
     return h;
+    }
 }
