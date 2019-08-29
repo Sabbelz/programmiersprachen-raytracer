@@ -59,9 +59,9 @@ void Renderer::render()
         Color current = calculate_color(hit, 3);
         p.color += current;
       } else {
-        p.color = scene_.ambiente_->col_;
+        p.color = {0.411764f,0.411764f,0.411764f};
       }
-      p.color = tonemapping(p.color);
+      //  p.color = tonemapping(p.color);
       write(p);
     }
   }

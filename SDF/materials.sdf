@@ -10,10 +10,11 @@ define shape triangle gtriangle 0 1 0 -1 0 0 1 0 0  green
 define shape composite root rbottom bsphere
 
 # transform name transformation parameter
-transform lbottom translate 0 0 -20
+transform lbottom translate 0 -10 -50
 transform lbottom rotate 30 0 1 0
 transform lbottom scale 30 10 20
 transform bsphere translate 0 0 -100
-transform bsphere scale 20 70 20
-transform gtriangle translate 0 0 -20
+transform bsphere scale 20 20 20
+transform gtriangle translate 20 0 -20
 transform gtriangle scale 10 10 10
+transform gtriangle rotate 30 0 0 1
