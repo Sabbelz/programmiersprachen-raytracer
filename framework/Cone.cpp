@@ -43,14 +43,7 @@ std::ostream& Cone::print(std::ostream& os) const{
               << " Center: " << center_.x << center_.y << center_.z
               << " Radius: " << radius_ << " Height: " << height_ << "\n";
 }
-<<<<<<< HEAD
 
-hitpoint Cone::intersect(Ray const& r) const{
-    hitpoint h;
-    
-    return h;
-}
-=======
 hitpoint Cone::intersect(Ray const& r) const {
     Ray n = transformRay(r, world_transformation_inv_);
     hitpoint hit{};
@@ -81,4 +74,3 @@ hitpoint Cone::intersect(Ray const& r) const {
     }
     return hit;
 }
->>>>>>> a290c4a5621be29bc7b0a6c47010fcd6400d64b5
