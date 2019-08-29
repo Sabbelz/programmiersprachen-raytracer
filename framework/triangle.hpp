@@ -2,7 +2,6 @@
 #define TRINAGLE_HPP
 
 #include "shape.hpp"
-#include "renderer.hpp"
 
 class Triangle : public Shape {
     public:

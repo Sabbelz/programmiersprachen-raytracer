@@ -1,10 +1,13 @@
 #include "triangle.hpp"
+#include "renderer.hpp"
 
 Triangle::Triangle(glm::vec3 a, glm::vec3 b, glm::vec3 c, std::string name ,std::shared_ptr<Material> material) :
     Shape{material,name},
     a_{a},
     b_{b},
     c_{c}{}
+
+Triangle::~Triangle(){}
 
 float Triangle::area() const{
     glm::vec3 ab = b_ - a_;

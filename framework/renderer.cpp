@@ -101,18 +101,6 @@ Color Renderer::tonemapping(Color const& clr){
   return color;
 }
 
-// Color Renderer::calculate_light(hitpoint const& hit, std::shared_ptr<Light> light){
-//   Ray shape_to_light {hit.hitpoint_, glm::normalize(light->pos_-hit.hitpoint_)};
-//   hitpoint h = scene_.root_comp_->intersect(shape_to_light);
-//   Color color{0.0f,0.0f,0.0f};
-
-//   if(!(h.hit_) || h.hit_){
-    
-//     color = hit.material_->ks; //Farberechnung fehlt
-//   }
-//   return color;
-// }
-
 void Renderer::write(Pixel const& p)
 {
   // flip pixels, because of opengl glDrawPixels
@@ -146,13 +134,6 @@ Color Renderer::calculate_ambiente(hitpoint const& hit) {
   
   return ambiente*ka;
 }
-
-// Color Renderer::calculate_diffuse(hitpoint const& hit, std::shared_ptr<Light> light) {
-//   Color Ip = light->col_*light->brightness_;
-//   glm::vec3 to_light = glm::normalize(light->pos_-hit.hitpoint_);
-//   float aux = glm::dot(to_light,glm::normalize(hit.normal_));
-//   return Ip*hit.material_->kd*aux;
-// }
 
 Color Renderer::calculate_diffuse(hitpoint const& hit) {
   Color combined_clr{0.0f,0.0f,0.0f};
@@ -226,6 +207,12 @@ Color Renderer::calculate_specular(hitpoint const& hit) {
     for(auto color : calculated_colors){
       combined_color += color;
     }
+
+  return combined_color;
+}
+
+Color Renderer::calculate_reflection(hitpoint const& hit) {
+  Color combined_color {0.0f,0.0f,0.0f};
 
   return combined_color;
 }

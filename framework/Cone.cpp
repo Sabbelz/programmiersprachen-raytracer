@@ -42,3 +42,9 @@ std::ostream& Cone::print(std::ostream& os) const{
               << " Center: " << center_.x << center_.y << center_.z
               << " Radius: " << radius_ << " Height: " << height_ << "\n";
 }
+
+hitpoint Cone::intersect(Ray const& r) const{
+    hitpoint h;
+    
+    return h;
+}
