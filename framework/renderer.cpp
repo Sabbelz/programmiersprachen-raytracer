@@ -211,8 +211,22 @@ Color Renderer::calculate_specular(hitpoint const& hit) {
   return combined_color;
 }
 
-Color Renderer::calculate_reflection(hitpoint const& hit) {
-  Color combined_color {0.0f,0.0f,0.0f};
+Color Renderer::calculate_reflection(hitpoint const& hit, int max_depth) {
+  glm::vec3 reflected_vec = glm::reflect(glm::normalize(hit.direction_),glm::normalize(hit.normal_));
+  Ray reflected_ray{hit.hitpoint_ + 0.1f*hit.normal_,glm::normalize(reflected_vec)};
 
-  return combined_color;
+  hitpoint new_hit = scene_.root_comp_->intersect(reflected_ray);
+
+  if(hit.hit_){
+    if(max_depth > 0) {
+      Color color = calculate_color(new_hit, max_depth-1);
+      return color;
+    }else
+    {
+      return Color{0.0f,0.0f,0.0f};
+    }
+  }else
+  {
+    return Color{0.411764f,0.411764f,0.411764f};
+  }
 }
