@@ -30,7 +30,7 @@ void Renderer::render()
   glm::vec3 u = glm::normalize(glm::cross(n,up));
   glm::vec3 v = glm::normalize(glm::cross(u,n));
 
-  // scene_.camera_->rotationMat_ = glm::mat4{glm::vec4{u,0.0f},glm::vec4{v,0.0f},glm::vec4{-n,0.0f},glm::vec4{0.0f,0.0f,0.0f,1.0f}};
+  scene_.camera_->rotationMat_ = glm::mat4{glm::vec4{u,0.0f},glm::vec4{v,0.0f},glm::vec4{-n,0.0f},glm::vec4{scene_.camera_->pos_,1.0f}};
 
   for (int x = 0; x < width_; ++x) {
     
@@ -45,11 +45,8 @@ void Renderer::render()
 
 
       Ray ray{origin, glm::normalize(direction)};
-      /**
-       * not yet implemented 
-       * ray = transformRay(s.camera->rotMat, ray);
-       */
-
+      ray = transformRay(ray,scene_.camera_->rotationMat_);
+       
       /**
        * Intersecion and color calculation
        */
@@ -64,6 +61,7 @@ void Renderer::render()
       //  p.color = tonemapping(p.color);
       write(p);
     }
+    // ppm_.save(filename_);
   }
   // std::size_t const checker_pattern_size = 20;
 

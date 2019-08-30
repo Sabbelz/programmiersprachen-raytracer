@@ -2,7 +2,7 @@ define material red 1 0 0 1 0 0 1 0 0 20
 define material green 0 1 0 0 1 0 0 1 0 50
 define material blue 0 0 1 0 0 1 0 0 1 10
 
-define shape box lbottom 0 0 0 1 1 -1 red
+define shape box lbottom 1 1 -1 2 2 -2 red
 define shape sphere bsphere 0 0 0 1 blue
 define shape triangle gtriangle 0 1 0 -1 0 0 1 0 0  green
 
@@ -10,8 +10,8 @@ define shape triangle gtriangle 0 1 0 -1 0 0 1 0 0  green
 define shape composite root rbottom bsphere
 
 # transform name transformation parameter
-transform lbottom translate 0 -10 -50
-transform lbottom rotate 30 0 1 0
+transform lbottom translate 0 -30 -50
+# transform lbottom rotate 30 0 1 0
 transform lbottom scale 30 10 20
 transform bsphere translate 0 0 -100
 transform bsphere scale 20 20 20
