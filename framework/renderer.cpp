@@ -39,11 +39,11 @@ void Renderer::render()
       Pixel p(x,y);
       /* creating the camera ray */
       glm::vec3 origin = scene_.camera_->pos_;
-      glm::vec3 direction = glm::vec3{x-(0.5*width_),y-(0.5*height_),-d}; //d
+      glm::vec3 dir = glm::normalize(scene_.camera_->direction_);
+      
+      glm::vec3 direction = dir + glm::vec3{x-(0.5*width_),y-(0.5*height_),-d};
 
       /* changing the direction depending on the adressed pixel */
-
-
       Ray ray{origin, glm::normalize(direction)};
       ray = transformRay(ray,scene_.camera_->rotationMat_);
        
@@ -56,7 +56,7 @@ void Renderer::render()
         Color current = calculate_color(hit, 3);
         p.color += current;
       } else {
-        p.color = {0.411764f,0.411764f,0.411764f};
+        p.color = {0.819607843f,0.819607843f,0.819607843f};
       }
       //  p.color = tonemapping(p.color);
       write(p);
@@ -86,8 +86,26 @@ Color Renderer::calculate_color(hitpoint const& hit, int counter){
   Color diffuse = calculate_diffuse(hit);
   Color specular = calculate_specular(hit);
 
-  color = ambiente + diffuse + specular;
+  if(hit.material_->glossy > 0 && hit.material_->opacity > 0){
+    Color reflected = calculate_reflection(hit,counter);
+    Color phong = (ambiente+diffuse) * (1-hit.material_->glossy) + reflected * hit.material_->glossy + specular;
+    Color refracted = calculate_refraction(hit, "start");
 
+    color = phong * (1 - hit.material_->opacity) + refracted * hit.material_->opacity;
+  }else if (hit.material_->glossy > 0)
+  {
+    Color reflected = calculate_reflection(hit,counter);
+
+    color = (ambiente+diffuse) * (1-hit.material_->glossy) + reflected * hit.material_->glossy + specular;
+  }else if (hit.material_->opacity > 0)
+  {
+    Color refracted = calculate_refraction(hit, "start");
+
+    color = (ambiente + diffuse + specular) * (1 - hit.material_->opacity) + refracted * hit.material_->opacity;
+  }else
+    {
+    color = ambiente + diffuse + specular;
+    }
   return color;
 }
 
@@ -215,7 +233,7 @@ Color Renderer::calculate_reflection(hitpoint const& hit, int max_depth) {
 
   hitpoint new_hit = scene_.root_comp_->intersect(reflected_ray);
 
-  if(hit.hit_){
+  if(new_hit.hit_){
     if(max_depth > 0) {
       Color color = calculate_color(new_hit, max_depth-1);
       return color;
@@ -225,6 +243,39 @@ Color Renderer::calculate_reflection(hitpoint const& hit, int max_depth) {
     }
   }else
   {
-    return Color{0.411764f,0.411764f,0.411764f};
+    return Color{0.819607843f,0.819607843f,0.819607843f};
+  }
+}
+
+Color Renderer::calculate_refraction(hitpoint const& hit, std::string prev_medium){
+  float delta_1 = 1.0f; // index of refraction (air)
+  float delta_2 = hit.material_->n; //index of refraction (medium)
+
+  if("start" == prev_medium){ // tow different media
+    delta_1 /= delta_2;
+  }else if(hit.name_ == prev_medium) //same medium
+  {
+    delta_1 = delta_2;
+  }
+  
+  /**
+   * OUT -> IN
+   */
+  glm::vec3 refracted_vec = glm::normalize(glm::refract(glm::normalize(hit.direction_),glm::normalize(hit.normal_),delta_1));
+  Ray refracted_ray{hit.hitpoint_-0.1f*hit.normal_, refracted_vec};
+
+  hitpoint new_hit = scene_.root_comp_->intersect(refracted_ray);
+
+  /**
+   * IN -> OUT
+   */
+  if(new_hit.hit_ && hit.name_ != new_hit.name_){
+    return calculate_color(new_hit,4);
+  }else if (new_hit.hit_)
+  {
+    return calculate_refraction(new_hit,new_hit.name_);
+  }else
+  {
+    return Color{0.819607843f,0.819607843f,0.819607843f};    
   }
 }

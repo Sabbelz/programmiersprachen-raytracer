@@ -25,3 +25,7 @@ void Shape::transformation(glm::mat4 const& matrix){
     world_transformation_ *= matrix;
     world_transformation_inv_ = glm::inverse(world_transformation_);
 }
+
+std::shared_ptr<Material> Shape::getMaterial() const{
+    return material_;
+}

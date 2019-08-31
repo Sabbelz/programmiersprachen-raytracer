@@ -30,6 +30,7 @@ public:
   Color calculate_diffuse(hitpoint const& hit);
   Color calculate_specular(hitpoint const& hit);
   Color calculate_reflection(hitpoint const& hit, int max_depth);
+  Color calculate_refraction(hitpoint const& hit, std::string prev_medium);
   Color tonemapping(Color const& clr);
 
   inline std::vector<Color> const& color_buffer() const

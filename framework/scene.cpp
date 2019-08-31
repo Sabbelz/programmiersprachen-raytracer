@@ -247,7 +247,7 @@ Scene read_SDF(std::string const& s) {
               std::string material_name;
               line_string_stream >> material_name;
 
-              float ka_r,ka_g,ka_b,kd_r,kd_g,kd_b,ks_r,ks_g,ks_b,flt;
+              float ka_r,ka_g,ka_b,kd_r,kd_g,kd_b,ks_r,ks_g,ks_b,m,n,o,g;
               line_string_stream >> ka_r;
               line_string_stream >> ka_g;
               line_string_stream >> ka_b;
@@ -260,9 +260,13 @@ Scene read_SDF(std::string const& s) {
               line_string_stream >> ks_g;
               line_string_stream >> ks_b;
 
-              line_string_stream >> flt;            
+              line_string_stream >> m;
 
-              Material mat{material_name,{ka_r,ka_g,ka_b},{kd_r,kd_g,kd_b},{ks_r,ks_g,ks_b},flt};
+              line_string_stream >> n;
+              line_string_stream >> o;
+              line_string_stream >> g;
+
+              Material mat{material_name,{ka_r,ka_g,ka_b},{kd_r,kd_g,kd_b},{ks_r,ks_g,ks_b},m,n,o,g};
               auto material = std::make_shared<Material>(mat);
               std::cout << mat << " was added" << std::endl;
               scene.vec_mat_.push_back(material);

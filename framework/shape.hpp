@@ -30,6 +30,7 @@ class Shape{
     virtual std::ostream& print(std::ostream& os) const;
 
     void transformation(glm::mat4 const& matrix);
+    std::shared_ptr<Material> getMaterial() const;
 
     std::string name_;
 
