@@ -33,7 +33,7 @@ float Cone::area() const{
 }
 
 float Cone::volume() const{
-    float volume = (1/3)* M_PI * radius_ * radius_ * height_;
+    float volume = (1.0f/3.0f)* M_PI * radius_ * radius_ * height_;
     return volume;
 }
 
@@ -51,25 +51,25 @@ hitpoint Cone::intersect(Ray const& r) const {
 	float a, b, c;
     float t0, t1;
 
-	a = pow(transformedRay.direction.x, 2) + pow(transformedRay.direction.y, 2);
-	b = 2 * transformedRay.origin.x*transformedRay.direction.x + 2 * transformedRay.origin.y*transformedRay.direction.y;
-	c = pow(transformedRay.origin.x, 2) + pow(transformedRay.origin.y, 2) - 1;
+	a = pow(transformedRay.direction.x, 2.0f) + pow(transformedRay.direction.y, 2.0f);
+	b = 2.0f * transformedRay.origin.x*transformedRay.direction.x + 2.0f * transformedRay.origin.y*transformedRay.direction.y;
+	c = pow(transformedRay.origin.x, 2.0f) + pow(transformedRay.origin.y, 2.0f) - 1.0f;
 
-	t0 = (-b + sqrt(pow(b, 2) - 4 * a*c)) / (2 * a);
-	t1 = (-b - sqrt(pow(b, 2) - 4 * a*c)) / (2 * a);
+	t0 = (-b + sqrt(pow(b, 2.0f) - 4.0f * a*c)) / (2 * a);
+	t1 = (-b - sqrt(pow(b, 2.0f) - 4.0f * a*c)) / (2.0f * a);
 
-    if (pow(b, 2) - 4 * a*c > 0) {
+    if (pow(b, 2.0f) - 4.0f * a*c > 0.0f) {
 		bool c1 = false;
 		bool c2 = false;
 		glm::vec3 cut_1, cut_2;
 
-		if (t0 > 0) {
+		if (t0 > 0.0f) {
 			cut_1 = transformedRay.origin + t1 * transformedRay.direction;
 			if (cut_1.z <= 0.0f && cut_1.z >= -1.0f) {
 				c1 = true;
 			}
 		}
-		if (t1 > 0) {
+		if (t1 > 0.0f) {
 			cut_2 = transformedRay.origin + t1 * transformedRay.direction;
 			if (cut_2.z <= 0.0f && cut_2.z >= -1.0f) {
 				c2 = true;
@@ -80,7 +80,7 @@ hitpoint Cone::intersect(Ray const& r) const {
 			if (t1 < t0) {
 				hit.hitpoint_ = cut_2;
 				hit.distance_ = t1;
-                p = glm::normalize(glm::vec3{hit.hitpoint_.x, hit.hitpoint_.y, 0});
+                p = glm::normalize(glm::vec3{hit.hitpoint_.x, hit.hitpoint_.y, 0.0f});
 				hit.normal_ = glm::normalize(glm::vec3{ p.x, p.y, 0.0f });
 				hit.hit_ = true;
 			}
@@ -88,26 +88,26 @@ hitpoint Cone::intersect(Ray const& r) const {
 				hit.hitpoint_ = cut_1;
 				hit.distance_ = t0;
                 p = glm::normalize(glm::vec3{hit.hitpoint_.x, hit.hitpoint_.y, 0});
-				hit.normal_ = glm::normalize(glm::vec3{p.x, p.y, 0.0f });
+				hit.normal_ = glm::normalize(glm::vec3{p.x, p.y, 0.0f});
 				hit.hit_ = true;
 			}
 		}
 		else if (c1) {
 			hit.hitpoint_ = cut_1;
 			hit.distance_ = t0;
-            p = glm::normalize(glm::vec3{hit.hitpoint_.x, hit.hitpoint_.y, 0});
-			hit.normal_= glm::normalize(glm::vec3{ p.x, p.y, 1.0f });
+            p = glm::normalize(glm::vec3{hit.hitpoint_.x, hit.hitpoint_.y, 0.0f});
+			hit.normal_= glm::normalize(glm::vec3{p.x, p.y, 1.0f});
 			hit.hit_ = true;
 		}
 		else if (c2) {
 			hit.hitpoint_ = cut_2;
 			hit.distance_ = t1;
-            p = glm::normalize(glm::vec3{hit.hitpoint_.x, hit.hitpoint_.y, 0});
-			hit.normal_ = glm::normalize(glm::vec3{ p.x, p.y, 0.0f });
+            p = glm::normalize(glm::vec3{hit.hitpoint_.x, hit.hitpoint_.y, 0.0f});
+			hit.normal_ = glm::normalize(glm::vec3{p.x, p.y, 0.0f});
 			hit.hit_ = true;
 		}
 
-		Plane plane_1{ glm::vec3{ 0,0,-1 }, glm::vec3{ 0,0,-1 } };
+		Plane plane_1{ glm::vec3{0.0f,0.0f,-1.0f}, glm::vec3{0.0f,0.0f,-1.0f} };
 
 		float distance_base = (glm::dot(plane_1.normal_, plane_1.origin_) - glm::dot(transformedRay.origin, plane_1.normal_)) / (glm::dot(transformedRay.direction, plane_1.normal_));
         glm::vec3 base_cut = transformedRay.origin + distance_base * transformedRay.direction;
@@ -125,15 +125,15 @@ hitpoint Cone::intersect(Ray const& r) const {
 		}
 		if (hit.hit_) {
 
-			glm::vec4 transformed_cut = world_transformation_ * glm::vec4{ hit.hitpoint_, 1 };
-			glm::vec4 transformed_normal = glm::normalize(glm::transpose(world_transformation_inv_) * glm::vec4{ hit.normal_ , 0 });
+			glm::vec4 transformed_cut = world_transformation_ * glm::vec4{ hit.hitpoint_, 1.0f };
+			glm::vec4 transformed_normal = glm::normalize(glm::transpose(world_transformation_inv_) * glm::vec4{ hit.normal_ , 0.0f });
 
 			hit.hitpoint_ = glm::vec3{ transformed_cut.x, transformed_cut.y, transformed_cut.z };
 			hit.normal_ = glm::normalize(glm::vec3{ transformed_normal.x, transformed_normal.y, transformed_normal.z });
 			hit.distance_ = glm::length(hit.hitpoint_ - r.origin);
             hit.material_ = material_;
             hit.name_ = name_;
-            return hit;
 		}
 	}
+	return hit;
 }

@@ -42,12 +42,11 @@ std::ostream& Cylinder::print(std::ostream& os) const{
 hitpoint Cylinder::intersect(Ray const& r) const{
     Ray transformedRay = transformRay(r, world_transformation_inv_);
     hitpoint hit{};
-    float t = 0.0f;
 	float a, b, c;
     float t0, t1;
 
 	a = pow(transformedRay.direction.x, 2) + pow(transformedRay.direction.y, 2);
-	b = 2 * transformedRay.origin.x*transformedRay.direction.x + 2 * transformedRay.origin.y*transformedRay.direction.y;
+	b = 2 * transformedRay.origin.x * transformedRay.direction.x + 2 * transformedRay.origin.y * transformedRay.direction.y;
 	c = pow(transformedRay.origin.x, 2) + pow(transformedRay.origin.y, 2) - 1;
 
 	t0 = (-b + sqrt(pow(b, 2) - 4 * a*c)) / (2 * a);
@@ -58,7 +57,7 @@ hitpoint Cylinder::intersect(Ray const& r) const{
 		glm::vec3 cut_1, cut_2;
 
 		if (t0 > 0) {
-			cut_1 = transformedRay.origin + t1 * transformedRay.direction;
+			cut_1 = transformedRay.origin + t0 * transformedRay.direction;
 			if (cut_1.z <= 0.0f && cut_1.z >= -1.0f) {
 				c1 = true;
 			}
@@ -128,7 +127,9 @@ hitpoint Cylinder::intersect(Ray const& r) const{
 			hit.distance_ = glm::length(hit.hitpoint_ - r.origin);
             hit.material_ = material_;
             hit.name_ = name_;
-            return hit;
+    		return hit;
 		}
 	}
+	hit.hit_ = false;
+    return hit;
 }
