@@ -252,7 +252,7 @@ Color Renderer::calculate_refraction(hitpoint const& hit, std::string prev_mediu
   float delta_2 = hit.material_->n; //index of refraction (medium)
 
   if("start" == prev_medium){ // tow different media
-    delta_1 /= delta_2;
+    delta_1 = 1.0f/delta_2;
   }else if(hit.name_ == prev_medium) //same medium
   {
     delta_1 = delta_2;
@@ -262,7 +262,8 @@ Color Renderer::calculate_refraction(hitpoint const& hit, std::string prev_mediu
    * OUT -> IN
    */
   glm::vec3 refracted_vec = glm::normalize(glm::refract(glm::normalize(hit.direction_),glm::normalize(hit.normal_),delta_1));
-  Ray refracted_ray{hit.hitpoint_-0.1f*hit.normal_, refracted_vec};
+  glm::vec3 origin = hit.hitpoint_ - 0.2f * hit.normal_;
+  Ray refracted_ray{origin, refracted_vec};
 
   hitpoint new_hit = scene_.root_comp_->intersect(refracted_ray);
 
@@ -270,9 +271,10 @@ Color Renderer::calculate_refraction(hitpoint const& hit, std::string prev_mediu
    * IN -> OUT
    */
   if(new_hit.hit_ && hit.name_ != new_hit.name_){
-    return calculate_color(new_hit,4);
+    return calculate_color(new_hit,3);
   }else if (new_hit.hit_)
   {
+    new_hit.normal_ = -new_hit.normal_;
     return calculate_refraction(new_hit,new_hit.name_);
   }else
   {
