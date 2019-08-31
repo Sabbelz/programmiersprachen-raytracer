@@ -154,8 +154,6 @@ hitpoint Box::intersect(Ray const& r)const{
     
         }
     }
-    
-    //TODO make sure, that the distance is positive if the box is in front of the  camera else the hit should be false!!!
 
     if (washit == true){
         glm::vec4 transformed_point = world_transformation_ * glm::vec4{hit.hitpoint_, 1};
