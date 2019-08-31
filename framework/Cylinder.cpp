@@ -40,39 +40,95 @@ std::ostream& Cylinder::print(std::ostream& os) const{
               << " Radius: " << radius_ << " Height: " << height_ << "\n";
 }
 hitpoint Cylinder::intersect(Ray const& r) const{
-    Ray n = transformRay(r, world_transformation_inv_);
+    Ray transformedRay = transformRay(r, world_transformation_inv_);
     hitpoint hit{};
-    float distance;
-    bool washit = glm::intersectRaySphere(n.origin, glm::normalize(n.direction), center_, pow(radius_,2), distance);
-    if (washit == true){
-        hit.hitpoint_= n.origin + distance*n.direction; 
-        glm::vec4 transformed_point = world_transformation_ * glm::vec4{hit.hitpoint_, 1};
+    float t = 0.0f;
+	float a, b, c;
+    float t0, t1;
 
-        if(center_.z + radius_ >= transformed_point.z 
-            && center_.y >= transformed_point.y 
-            && center_.x >= transformed_point.x){
+	a = pow(transformedRay.direction.x, 2) + pow(transformedRay.direction.y, 2);
+	b = 2 * transformedRay.origin.x*transformedRay.direction.x + 2 * transformedRay.origin.y*transformedRay.direction.y;
+	c = pow(transformedRay.origin.x, 2) + pow(transformedRay.origin.y, 2) - 1;
 
-            hit.normal_ = {0.0f,-1.0f,0.0f};
-        }
-        if(center_.z + radius_>= transformed_point.z 
-            && center_.y + height_ >= transformed_point.y 
-            && center_.x >= transformed_point.x){
+	t0 = (-b + sqrt(pow(b, 2) - 4 * a*c)) / (2 * a);
+	t1 = (-b - sqrt(pow(b, 2) - 4 * a*c)) / (2 * a);
+    if (pow(b, 2) - 4 * a*c > 0) {
+		bool c1 = false;
+		bool c2 = false;
+		glm::vec3 cut_1, cut_2;
 
-            hit.normal_ = {0.0f,1.0f,0.0f};
-            
-        } else {
-            glm::vec3 hit_center{center_.x, hit.hitpoint_.y, center_.z};
-            hit.normal_ = glm::normalize(hit_center - hit.hitpoint_);
-        }
-       
-        glm::vec4 transformed_normal = glm::normalize(glm::transpose(world_transformation_inv_)* glm::vec4{hit.normal_,0});
-        hit.hitpoint_ = glm::vec3{transformed_point.x, transformed_point.y, transformed_point.z};
-        hit.normal_ = glm::vec3{transformed_normal.x, transformed_normal.y, transformed_normal.z};
-        hit.hit_= true;
-        hit.material_ = material_;
-        hit.direction_ = r.direction;
-        hit.distance_ = glm::length(hit.hitpoint_ - r.origin);
-        hit.name_ = name_;
-    }
-    return hit;
+		if (t0 > 0) {
+			cut_1 = transformedRay.origin + t1 * transformedRay.direction;
+			if (cut_1.z <= 0.0f && cut_1.z >= -1.0f) {
+				c1 = true;
+			}
+		}
+		if (t1 > 0) {
+			cut_2 = transformedRay.origin + t1 * transformedRay.direction;
+			if (cut_2.z <= 0.0f && cut_2.z >= -1.0f) {
+				c2 = true;
+			}
+		}
+
+		if (c1 && c2) {
+			if (t1 < t0) {
+				hit.hitpoint_ = cut_2;
+				hit.distance_ = t1;
+				hit.normal_ = glm::normalize(glm::vec3{ hit.hitpoint_.x, hit.hitpoint_.y, 0.0f });
+				hit.hit_ = true;
+			}
+			else {
+				hit.hitpoint_ = cut_1;
+				hit.distance_ = t0;
+				hit.normal_ = glm::normalize(glm::vec3{ hit.hitpoint_.x, hit.hitpoint_.y, 0.0f });
+				hit.hit_ = true;
+			}
+		}
+		else if (c1) {
+			hit.hitpoint_ = cut_1;
+			hit.distance_ = t0;
+			hit.normal_= glm::normalize(glm::vec3{ hit.hitpoint_.x, hit.hitpoint_.y, 0.0f });
+			hit.hit_ = true;
+		}
+		else if (c2) {
+			hit.hitpoint_ = cut_2;
+			hit.distance_ = t1;
+			hit.normal_ = glm::normalize(glm::vec3{ hit.hitpoint_.x, hit.hitpoint_.y, 0.0f });
+			hit.hit_ = true;
+		}
+
+		Plane plane_1{ glm::vec3{ 0,0,-1 }, glm::vec3{ 0,0,-1 } };
+		Plane plane_2{ glm::vec3{ 0,0,0 },	glm::vec3{ 0,0,1 } };
+
+		float distance_base_1 = (glm::dot(plane_1.normal_, plane_1.origin_) - glm::dot(transformedRay.origin, plane_1.normal_)) / (glm::dot(transformedRay.direction, plane_1.normal_));
+		float distance_base_2 = (glm::dot(plane_2.normal_, plane_2.origin_) - glm::dot(transformedRay.origin, plane_2.normal_)) / (glm::dot(transformedRay.direction, plane_2.normal_));
+		float distance_base = distance_base_1;
+
+		if (distance_base_2 > 0 && distance_base_2 < distance_base) {
+			distance_base = distance_base_2;
+		}
+		if (distance_base > 0) {
+			glm::vec3  base_cut = transformedRay.origin + distance_base * transformedRay.direction;
+			if (glm::length(glm::vec3{ base_cut.x, base_cut.y, 0 }) <= 1) {
+				if ((c1 && c2 && distance_base < t0 && distance_base < t1) || (c1 && distance_base < t0) || (c2 && distance_base < t1)) {
+					hit.hitpoint_ = base_cut;
+					hit.distance_ = distance_base;
+					hit.normal_ = glm::normalize(glm::vec3{hit.hitpoint_.x, hit.hitpoint_.y, 0.0f });
+					hit.hit_ = true;
+				}
+			}
+		}
+		if (hit.hit_) {
+
+			glm::vec4 transformed_cut = world_transformation_ * glm::vec4{ hit.hitpoint_, 1 };
+			glm::vec4 transformed_normal = glm::normalize(glm::transpose(world_transformation_inv_) * glm::vec4{ hit.normal_ , 0 });
+
+			hit.hitpoint_ = glm::vec3{ transformed_cut.x, transformed_cut.y, transformed_cut.z };
+			hit.normal_ = glm::normalize(glm::vec3{ transformed_normal.x, transformed_normal.y, transformed_normal.z });
+			hit.distance_ = glm::length(hit.hitpoint_ - r.origin);
+            hit.material_ = material_;
+            hit.name_ = name_;
+            return hit;
+		}
+	}
 }
