@@ -99,8 +99,8 @@ void Renderer::render()
 
     std::string number = std::to_string(i);
 
-    std::string filename = "./" + filename_+number+".ppm";
-    ppm_.save(filename);
+    // std::string filename = "./" + filename_+number+".ppm";
+    // ppm_.save(filename);
     }
   }
   // std::size_t const checker_pattern_size = 20;
