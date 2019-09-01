@@ -21,10 +21,10 @@ Renderer::Renderer(unsigned w, unsigned h, std::string const& file, Scene const&
 
 void Renderer::render()
 {
-  bool anti_aliasing = false;
+  bool anti_aliasing = true;
   double d = (width_/2.0f)/tan((scene_.camera_->fieldOfView_/2.0f)*M_PI/180);
 
-  for(int i = 0; i < 5; ++i){
+  for(int i = 0; i < 1; ++i){
 
   
 
