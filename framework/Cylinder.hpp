@@ -6,7 +6,6 @@ class Cylinder: public Shape{
     public:
 
     Cylinder();
-    Cylinder(glm::vec3 const& center, float height, float radius);
     Cylinder(glm::vec3 const& center, float height, float radius, std::string const& name, std::shared_ptr<Material> material);
 
     ~Cylinder(){}

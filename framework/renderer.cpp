@@ -21,7 +21,7 @@ Renderer::Renderer(unsigned w, unsigned h, std::string const& file, Scene const&
 
 void Renderer::render()
 {
-  bool anti_aliasing = true;
+  bool anti_aliasing = false;
   double d = (width_/2.0f)/tan((scene_.camera_->fieldOfView_/2.0f)*M_PI/180);
 
   /* Kameratransformation (Seite 40)   */
