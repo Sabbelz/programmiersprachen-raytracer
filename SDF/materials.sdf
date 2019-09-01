@@ -1,12 +1,12 @@
-define material red 1 0 0 1 0 0 1 0 0 20 0.4 0.9 0.1
+define material red 1 0 0 1 0 0 1 0 0 20 0.8 0.33 0.2
 define material green 0 1 0 0 1 0 0 1 0 50 0 0 0
-define material blue 0 0 1 0 0 1 0 0 1 10 0 0 0.6
+define material blue 0 0 1 0 0 1 0 0 1 10 0 0 0.4
 
 define shape box lbottom -1 -1 -4 1 1 -2.99 red
 define shape sphere bsphere 0 0 -3 1 blue
 define shape triangle gtriangle 0 2 -3 -2 0 -3 2 0 -3 green
 #define shape cone ccone 0 0 -6 10 10 green
-define shape cylinder invisible 30 30 -100 4 3 green
+#define shape cylinder invisible 30 30 -100 4 3 green
 
 # composites
 define shape composite root rbottom bsphere
@@ -15,7 +15,7 @@ define shape composite root rbottom bsphere
 transform lbottom translate -2 -2 0
 transform lbottom rotate 6.28318530718 0 1 0
 transform lbottom scale 1 1 1
-transform bsphere translate 0 0 -100
+transform bsphere translate 0 0 -50
 transform bsphere scale 20 20 20
 transform gtriangle translate 20 0 -20
 transform gtriangle scale 10 10 10

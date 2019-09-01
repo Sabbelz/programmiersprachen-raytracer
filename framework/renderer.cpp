@@ -21,6 +21,7 @@ Renderer::Renderer(unsigned w, unsigned h, std::string const& file, Scene const&
 
 void Renderer::render()
 {
+  bool anti_aliasing = true;
   double d = (width_/2.0f)/tan((scene_.camera_->fieldOfView_/2.0f)*M_PI/180);
 
   /* Kameratransformation (Seite 40)   */
@@ -40,23 +41,41 @@ void Renderer::render()
       /* creating the camera ray */
       glm::vec3 origin = scene_.camera_->pos_;
       glm::vec3 dir = glm::normalize(scene_.camera_->direction_);
+      std::vector<glm::vec3> directions;
+
+      if(anti_aliasing){
+        glm::vec3 direction1 = dir + glm::vec3{x-(0.5*width_)+0.5f,y-(0.5*height_)+0.5f,-d};
+        glm::vec3 direction2 = dir + glm::vec3{x-(0.5*width_)+0.5f,y-(0.5*height_)-0.5f,-d};
+        glm::vec3 direction3 = dir + glm::vec3{x-(0.5*width_)-0.5f,y-(0.5*height_)+0.5f,-d};
+        glm::vec3 direction4 = dir + glm::vec3{x-(0.5*width_)-0.5f,y-(0.5*height_)-0.5f,-d};
+
+        directions.push_back(direction1);
+        directions.push_back(direction2);
+        directions.push_back(direction3);
+        directions.push_back(direction4);
+      }else
+      {
+        glm::vec3 direction0 = dir + glm::vec3{x-(0.5*width_),y-(0.5*height_),-d};
+
+        directions.push_back(direction0);      
+      }
       
-      glm::vec3 direction = dir + glm::vec3{x-(0.5*width_),y-(0.5*height_),-d};
+      for(glm::vec3 direction : directions){
+        /* changing the direction depending on the adressed pixel */
+        Ray ray{origin, glm::normalize(direction)};
+        ray = transformRay(ray,scene_.camera_->rotationMat_);
+        
+        /**
+         * Intersecion and color calculation
+         */
+        hitpoint hit = scene_.root_comp_->intersect(ray);
 
-      /* changing the direction depending on the adressed pixel */
-      Ray ray{origin, glm::normalize(direction)};
-      ray = transformRay(ray,scene_.camera_->rotationMat_);
-       
-      /**
-       * Intersecion and color calculation
-       */
-      hitpoint hit = scene_.root_comp_->intersect(ray);
-
-      if(hit.hit_) {
-        Color current = calculate_color(hit, 3);
-        p.color += current;
-      } else {
-        p.color = {0.819607843f,0.819607843f,0.819607843f};
+        if(hit.hit_) {
+          Color current = calculate_color(hit, 3);
+          p.color += current/(directions.size());
+        } else {
+          p.color += Color{0.819607843f,0.819607843f,0.819607843f}/(directions.size());
+        }
       }
       //  p.color = tonemapping(p.color);
       write(p);
