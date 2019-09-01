@@ -66,21 +66,21 @@ hitpoint Cone::intersect(Ray const& r) const {
 	b = 2 * transformedRay.origin.x*transformedRay.direction.x + 2 * transformedRay.origin.y*transformedRay.direction.y - 2 * transformedRay.origin.z*transformedRay.direction.z;
 	c = pow(transformedRay.origin.x, 2) + pow(transformedRay.origin.y, 2) - pow(transformedRay.origin.z, 2);
 
-	t0 = (-b + sqrt(pow(b, 2.0f) - 4.0f * a*c)) / (2.0f * a);
-	t1 = (-b - sqrt(pow(b, 2.0f) - 4.0f * a*c)) / (2.0f * a);
+	t0 = (-b + sqrt(pow(b, 2) - 4 * a*c)) / (2 * a);
+	t1 = (-b - sqrt(pow(b, 2) - 4 * a*c)) / (2 * a);
 
-    if (pow(b, 2.0f) - 4.0f * a*c > 0.0f) {
+    if (pow(b, 2) - 4 * a*c > 0) {
 		bool c1 = false;
 		bool c2 = false;
 		glm::vec3 cut_1, cut_2;
 
-		if (t0 > 0.0f) {
+		if (t0 > 0) {
 			cut_1 = transformedRay.origin + t0 * transformedRay.direction;
 			if (cut_1.z <= 0.0f && cut_1.z >= -1.0f) {
 				c1 = true;
 			}
 		}
-		if (t1 > 0.0f) {
+		if (t1 > 0) {
 			cut_2 = transformedRay.origin + t1 * transformedRay.direction;
 			if (cut_2.z <= 0.0f && cut_2.z >= -1.0f) {
 				c2 = true;
@@ -98,7 +98,7 @@ hitpoint Cone::intersect(Ray const& r) const {
 			else {
 				hit.hitpoint_ = cut_1;
 				hit.distance_ = t0;
-                p = glm::normalize(glm::vec3{hit.hitpoint_.x, hit.hitpoint_.y, 0});
+                p = glm::normalize(glm::vec3{hit.hitpoint_.x, hit.hitpoint_.y, 0.0f});
 				hit.normal_ = glm::normalize(glm::vec3{p.x, p.y, 1.0f});
 				hit.hit_ = true;
 			}
@@ -120,7 +120,7 @@ hitpoint Cone::intersect(Ray const& r) const {
 
 		Plane plane_1{ glm::vec3{0.0f,0.0f,-1.0f}, glm::vec3{0.0f,0.0f,-1.0f} };
 
-		float distance_base = (glm::dot(plane_1.normal_, plane_1.origin_) - glm::dot(transformedRay.origin, plane_1.normal_)) / (glm::dot(transformedRay.direction, plane_1.normal_));
+		float distance_base = (glm::dot(plane_1.normal_, plane_1.origin_) - glm::dot(transformedRay.origin, plane_1.normal_));
         glm::vec3 base_cut = transformedRay.origin + distance_base * transformedRay.direction;
 		if (distance_base > 0 ) {
 			if(glm::length(base_cut - glm::vec3{0.0f, 0.0f, -1.0f}) <= 1){
