@@ -1,4 +1,5 @@
 #include "scene.hpp"
+#include <sstream>
 
 
 std::shared_ptr<Material> Scene::search_vec(std::string const& s){
@@ -374,7 +375,7 @@ Scene read_SDF(std::string const& s) {
                 glm::vec4{0.0f, 1.0f, 0.0f, 0.0f},
                 glm::vec4{-sin(angle),0.0f,cos(angle),0.0f},
                 glm::vec4{0.0f,0.0f,0.0f,1.0f}      
-            };
+              };
 
             shape->transformation(matrix);
 

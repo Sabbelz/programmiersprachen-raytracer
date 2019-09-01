@@ -24,10 +24,26 @@ void Renderer::render()
   bool anti_aliasing = false;
   double d = (width_/2.0f)/tan((scene_.camera_->fieldOfView_/2.0f)*M_PI/180);
 
-  /* Kameratransformation (Seite 40)   */
+  for(int i = 0; i < 5; ++i){
 
-  glm::vec3 n = glm::normalize(scene_.camera_->direction_);
-  glm::vec3 up = scene_.camera_->up_;
+  
+
+   float angle = (i/360.0f)*2*M_PI;
+
+  glm::mat4 matrix = glm::mat4{
+                     glm::vec4{cos(angle), 0.0f, sin(angle), 0.0f},
+                     glm::vec4{0.0f, 1.0f, 0.0f, 0.0f},
+                     glm::vec4{-sin(angle),0.0f,cos(angle),0.0f},
+                     glm::vec4{0.0f,0.0f,0.0f,1.0f}      
+                     };
+  /* Rotation */
+  glm::vec4 n_4 = glm::vec4{glm::normalize(scene_.camera_->direction_),0}*matrix;
+  glm::vec4 up_4 = glm::vec4{glm::normalize(scene_.camera_->up_),0}*matrix; 
+  
+  // glm::vec3 n = glm::normalize(scene_.camera_->direction_);
+  // glm::vec3 up = scene_.camera_->up_;
+  glm::vec3 n = glm::normalize(glm::vec3{n_4.x,n_4.y,n_4.z});
+  glm::vec3 up = glm::normalize(glm::vec3{up_4.x,up_4.y,up_4.z});
   glm::vec3 u = glm::normalize(glm::cross(n,up));
   glm::vec3 v = glm::normalize(glm::cross(u,n));
 
@@ -80,7 +96,12 @@ void Renderer::render()
       //  p.color = tonemapping(p.color);
       write(p);
     }
-    // ppm_.save(filename_);
+
+    std::string number = std::to_string(i);
+
+    std::string filename = "./" + filename_+number+".ppm";
+    ppm_.save(filename);
+    }
   }
   // std::size_t const checker_pattern_size = 20;
 

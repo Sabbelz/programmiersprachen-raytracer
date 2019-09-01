@@ -8,14 +8,14 @@
 
 int main(int argc, char* argv[])
 {
-  unsigned const image_width = 1366;
-  unsigned const image_height = 768;
-  std::string const filename = "./checkerboard.ppm";
+  unsigned const image_width = 400;
+  unsigned const image_height = 600;
+  std::string const filename = "Picture";
 
   std::cout<<"reading sdf  \n";
-  Scene scene = read_SDF("/home/sebastian/materials.sdf");
+  // Scene scene = read_SDF("/home/sebastian/materials.sdf");
   //  Scene scene = read_SDF("/home/luigi/Desktop/materials.sdf");
-  //Scene scene = read_SDF("/home/luigi/Documents/Sebastian_raytracer/programmiersprachen-raytracer/SDF/materials.sdf");
+  Scene scene = read_SDF("/home/luigi/Documents/Sebastian_raytracer/programmiersprachen-raytracer/SDF/materials.sdf");
   std::cout<<"reading sdf finished \n";
   Light light1("Licht", {0.0f,0.0f,0.0f}, {1.0f,1.0f,1.0f}, 0.0);
   Light light2("Licht2", {100.0f,100.0f,50.0f}, {1.0f,1.0f,1.0f}, 1.0);
